@@ -30,7 +30,7 @@ namespace Contacts
         {
             InitializeComponent();
 
-            NavigationService.NavigateAsync($"{nameof(SignInView)}");
+            NavigationService.NavigateAsync($"{nameof(SignUpView)}");
         }
 
         protected override void OnStart()
