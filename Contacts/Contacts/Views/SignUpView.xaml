@@ -4,9 +4,20 @@
              x:Class="Contacts.Views.SignUpView">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Frame BackgroundColor="#084896" Padding="12" CornerRadius="0">
+                <StackLayout Orientation="Horizontal">
+                    <Image Source="leftArrow.png" HeightRequest="20" Margin="0, 0, 20, 0"/>
+                    <Label Text="Users SignUp" FontFamily="Arial" TextColor="White" FontSize="20"/>
+                </StackLayout>
+            </Frame>
+            <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
+                <Entry Placeholder="Login" VerticalTextAlignment="Center"/>
+                <Entry Placeholder="Password" VerticalTextAlignment="Center" IsPassword ="True"/>
+                <Entry Placeholder="Confirm password" VerticalTextAlignment="Center" IsPassword ="True"/>
+            </StackLayout>
+            <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
+                <Button Text="SIGN UP" VerticalOptions="Center" BackgroundColor="DarkOrange"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
