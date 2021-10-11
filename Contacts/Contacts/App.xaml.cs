@@ -1,4 +1,5 @@
-﻿using Contacts.Services.Repository;
+﻿using Contacts.Services.Authorization;
+using Contacts.Services.Repository;
 using Contacts.Services.SettingsManager;
 using Contacts.ViewModels;
 using Contacts.Views;
@@ -22,6 +23,7 @@ namespace Contacts
             //Services
             containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
             containerRegistry.RegisterInstance<ISettingsManager>(Container.Resolve<SettingsManager>());
+            containerRegistry.RegisterInstance<IAuthorization>(Container.Resolve<Authorization>());
 
             //Navigation
             containerRegistry.RegisterForNavigation<NavigationPage>();

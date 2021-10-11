@@ -19,6 +19,7 @@ namespace Contacts.Services.Repository
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ContactsBook.db3");
                 var database = new SQLiteAsyncConnection(path);
 
+                database.CreateTableAsync<User>().Wait();
                 database.CreateTableAsync<Contact>().Wait();
 
                 return database;
@@ -42,6 +43,15 @@ namespace Contacts.Services.Repository
         public Task<int> UpdateAsync<T>(T entity) where T : IEntityBase, new()
         {
             return _database.Value.UpdateAsync(entity);
+        }
+
+        public Task<T> SearchByIdAsync<T>(int Id) where T : IEntityBase, new()
+        {
+            return _database.Value.Table<T>().Where(i => i.Id == Id).FirstOrDefaultAsync();
+        }
+        public Task<User> SearchUserByLoginAsync<T>(string login) where T : IEntityBase, new()
+        {
+            return _database.Value.Table<User>().Where(row => row.Login == login).FirstOrDefaultAsync();
         }
     }
 }
