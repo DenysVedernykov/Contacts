@@ -1,4 +1,5 @@
-﻿using Contacts.Services.Authorization;
+﻿using Acr.UserDialogs;
+using Contacts.Services.Authorization;
 using Contacts.Services.Repository;
 using Contacts.Services.SettingsManager;
 using Prism.Mvvm;
@@ -39,6 +40,17 @@ namespace Contacts.ViewModels
             {
                 _settingsManager.Login = _login;
                 _settingsManager.Password = _password;
+            }
+            else
+            {
+                var confirmConfig = new ConfirmConfig()
+                {
+                    Message = "Incorrect login or password",
+                    OkText = "Ok"
+                };
+
+                var confirm = UserDialogs.Instance.ConfirmAsync(confirmConfig);
+
             }
         }
         public ICommand OnRegCommand => new Command(RegCommand);
