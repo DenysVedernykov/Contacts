@@ -14,12 +14,12 @@ namespace Contacts.Services.Repository
 
         public Repository()
         {
-            _database = new Lazy<SQLiteAsyncConnection>(() =>
+             _database = new Lazy<SQLiteAsyncConnection>(() =>
             {
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ContactsBook.db3");
                 var database = new SQLiteAsyncConnection(path);
 
-                database.CreateTableAsync<Contact>();
+                database.CreateTableAsync<Contact>().Wait();
 
                 return database;
             });
