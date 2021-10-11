@@ -2,9 +2,12 @@
 using Contacts.Services.Authorization;
 using Contacts.Services.Repository;
 using Contacts.Services.SettingsManager;
+using Contacts.Views;
 using Prism.Mvvm;
+using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,12 +20,36 @@ namespace Contacts.ViewModels
         private IRepository _repository;
         private ISettingsManager _settingsManager;
         private IAuthorization auth;
+        private INavigationService _navigationService;
 
-        public SignInViewModel(ISettingsManager settingsManager, IRepository repository)
+        public SignInViewModel(ISettingsManager settingsManager, IRepository repository, INavigationService navigationService)
         {
             _repository = repository;
             _settingsManager = settingsManager;
+
+            _login = _settingsManager.Login;
+
             auth = new Authorization(repository);
+
+            _navigationService = navigationService;
+
+            _enableButton = false;
+        }
+
+        private bool _enableButton;
+        public bool EnableButton { get => _enableButton; set => SetProperty(ref _enableButton, value);}
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            base.OnPropertyChanged(args);
+
+            bool isEnable = true;
+            if ((Login == "") || (Password == ""))
+            {
+                isEnable = false;
+            }
+
+            EnableButton = isEnable;
         }
 
         //fields user
@@ -34,30 +61,34 @@ namespace Contacts.ViewModels
 
         public ICommand OnLoginCommand => new Command(LoginCommand);
 
-        private void LoginCommand(object obj)
+        private async void LoginCommand(object obj)
         {
             if(auth.Login(_login, _password))
             {
                 _settingsManager.Login = _login;
                 _settingsManager.Password = _password;
+
+                await _navigationService.NavigateAsync("/MainListView");
+
+                Login = "";
+                Password = "";
             }
             else
             {
-                var confirmConfig = new ConfirmConfig()
+                await UserDialogs.Instance.AlertAsync(new AlertConfig()
                 {
-                    Message = "Incorrect login or password",
+                    Message = "Invalid login or password!",
                     OkText = "Ok"
-                };
+                });
 
-                var confirm = UserDialogs.Instance.ConfirmAsync(confirmConfig);
-
+                Password = "";
             }
         }
         public ICommand OnRegCommand => new Command(RegCommand);
 
-        private void RegCommand(object obj)
+        private async void RegCommand(object obj)
         {
-            
+            await _navigationService.NavigateAsync("SignUpView");
         }
     }
 }

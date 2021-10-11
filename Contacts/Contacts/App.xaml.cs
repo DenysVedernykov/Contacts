@@ -26,7 +26,7 @@ namespace Contacts
             containerRegistry.RegisterInstance<IAuthorization>(Container.Resolve<Authorization>());
 
             //Navigation
-            containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<SignInView>();
             containerRegistry.RegisterForNavigation<AddEditProfileView, AddEditProfileViewModel>();
             containerRegistry.RegisterForNavigation<MainListView, MainListViewModel>();
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();

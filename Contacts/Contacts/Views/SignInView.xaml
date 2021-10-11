@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contacts.Views.SignInView">
+    
     <ContentPage.Content>
         <StackLayout>
             <Frame BackgroundColor="#084896" Padding="12" CornerRadius="0">
@@ -12,11 +13,15 @@
                 <Entry Text="{Binding Password}" Placeholder="Password" VerticalTextAlignment="Center" IsPassword ="True"/>
             </StackLayout>
             <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
-                <Button Command="{Binding OnLoginCommand}" Text="SIGN IN" VerticalOptions="Center" BackgroundColor="DarkOrange"/>
+                <Button Command="{Binding OnLoginCommand}" IsEnabled="{Binding EnableButton}" Text="SIGN IN" VerticalOptions="Center" BackgroundColor="DarkOrange"/>
                 <Label VerticalOptions="Center" HorizontalOptions="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="SIGN UP" TextColor="Blue" TextDecorations="Underline"></Span>
+                            <Span Text="SIGN UP" TextColor="Blue" TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OnRegCommand}"/>
+                                </Span.GestureRecognizers>
+                            </Span>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
