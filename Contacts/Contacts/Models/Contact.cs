@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Contacts.Models
 {
-    class Contact: IEntityBase
+    public class Contact: IEntityBase
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
