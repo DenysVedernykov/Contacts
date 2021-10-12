@@ -17,23 +17,18 @@ namespace Contacts.ViewModels
 {
     class SignInViewModel : BindableBase
     {
-        private IRepository _repository;
         private ISettingsManager _settingsManager;
-        private IAuthorization auth;
+        private IAuthorization _authorization;
         private INavigationService _navigationService;
 
-        public SignInViewModel(ISettingsManager settingsManager, IRepository repository, INavigationService navigationService)
+        public SignInViewModel(ISettingsManager settingsManager, IAuthorization authorization, INavigationService navigationService)
         {
-            _repository = repository;
             _settingsManager = settingsManager;
-
-            _login = _settingsManager.Login;
-
-            auth = new Authorization(repository);
-
+            _authorization = authorization;
             _navigationService = navigationService;
 
             _enableButton = false;
+            _login = _settingsManager.Login;
         }
 
         private bool _enableButton;
@@ -63,7 +58,7 @@ namespace Contacts.ViewModels
 
         private async void LoginCommand(object obj)
         {
-            if(auth.Login(_login, _password))
+            if(_authorization.Login(_login, _password))
             {
                 _settingsManager.Session = true;
 

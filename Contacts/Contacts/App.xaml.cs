@@ -42,7 +42,7 @@ namespace Contacts
         protected override void OnInitialized()
         {
             InitializeComponent();
-            
+            //settingsManager.Session = false;
             bool session = settingsManager.Session;
             
             if (session)

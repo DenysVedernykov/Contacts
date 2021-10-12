@@ -46,7 +46,7 @@ namespace Contacts.Services.Authorization
             else
             {
                 //убираем пробелы, включаем однострочный режим, ищем цифру
-                if (!Regex.IsMatch(login.Trim(), @"^[0-9]", RegexOptions.Singleline))
+                if (Regex.IsMatch(login.Trim(), @"^[0-9]", RegexOptions.Singleline))
                 {
                     result = false;
                 }
