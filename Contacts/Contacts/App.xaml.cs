@@ -6,6 +6,7 @@ using Contacts.Views;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
+using Unity.Lifetime;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,13 +18,17 @@ namespace Contacts
         {
         }
 
+        static Repository repository = new Repository();
+        static SettingsManager settingsManager = new SettingsManager();
+        static Authorization authorization = new Authorization(repository);
+
         #region --- Ovverides ---
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             //Services
-            containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
-            containerRegistry.RegisterInstance<ISettingsManager>(Container.Resolve<SettingsManager>());
-            containerRegistry.RegisterInstance<IAuthorization>(Container.Resolve<Authorization>());
+            containerRegistry.RegisterInstance<IRepository>(repository);
+            containerRegistry.RegisterInstance<ISettingsManager>(settingsManager);
+            containerRegistry.RegisterInstance<IAuthorization>(authorization);
 
             //Navigation
             containerRegistry.RegisterForNavigation<NavigationPage>();
@@ -37,8 +42,27 @@ namespace Contacts
         protected override void OnInitialized()
         {
             InitializeComponent();
-
-            NavigationService.NavigateAsync($"{nameof(SignInView)}");
+            
+            bool session = settingsManager.Session;
+            
+            if (session)
+            {
+                //повторная проверка учетных данных, потому что в идеале они могли устареть,
+                //если бы, например, авторизация была через Google или просто онлайн
+                // + получаем всю инфу про пользователя
+                if(authorization.Login(settingsManager.Login, settingsManager.Password))
+                {
+                    NavigationService.NavigateAsync($"{nameof(MainListView)}");
+                }
+                else
+                {
+                    NavigationService.NavigateAsync($"{nameof(SignInView)}");
+                }
+            }
+            else
+            {
+                NavigationService.NavigateAsync($"{nameof(SignInView)}");
+            }
         }
 
         protected override void OnStart()

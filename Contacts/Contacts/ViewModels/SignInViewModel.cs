@@ -65,6 +65,8 @@ namespace Contacts.ViewModels
         {
             if(auth.Login(_login, _password))
             {
+                _settingsManager.Session = true;
+
                 _settingsManager.Login = _login;
                 _settingsManager.Password = _password;
 
