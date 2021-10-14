@@ -38,13 +38,15 @@ namespace Contacts.ViewModels
         {
             base.OnPropertyChanged(args);
 
-            bool isEnable = true;
-            if ((Login == "") || (Password == ""))
+            switch (args.PropertyName)
             {
-                isEnable = false;
+                case nameof(Login):
+                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
+                    break;
+                case nameof(Password):
+                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
+                    break;
             }
-
-            EnableButton = isEnable;
         }
 
         //fields user
@@ -65,7 +67,7 @@ namespace Contacts.ViewModels
                 _settingsManager.Login = _login;
                 _settingsManager.Password = _password;
 
-                await _navigationService.NavigateAsync("/MainListView");
+                await _navigationService.NavigateAsync("/NavigationPage/MainListView");
 
                 Login = "";
                 Password = "";

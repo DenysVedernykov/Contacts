@@ -1,4 +1,5 @@
-﻿using Contacts.Services.Authorization;
+﻿using Contacts.Models;
+using Contacts.Services.Authorization;
 using Contacts.Services.Contacts;
 using Contacts.Services.Repository;
 using Contacts.Services.SettingsManager;
@@ -38,7 +39,9 @@ namespace Contacts
             containerRegistry.RegisterForNavigation<MainListView, MainListViewModel>();
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<SignInView, SignInViewModel>();
-            containerRegistry.RegisterForNavigation<SignUpView, SignUpViewModel>(); 
+            containerRegistry.RegisterForNavigation<SignUpView, SignUpViewModel>();
+
+            containerRegistry.RegisterDialog<DialogView, DialogViewModel>();
         }
 
         protected override void OnInitialized()
@@ -46,7 +49,13 @@ namespace Contacts
             InitializeComponent();
             //settingsManager.Session = false;
             bool session = settingsManager.Session;
-            
+            //settingsManager.Sort = "Nick";
+            //var all = repository.GetAllRowsAsync<Contact>();
+            //foreach(var i in all.Result)
+            //{
+            //    repository.DeleteAsync(i);
+            //}
+
             if (session)
             {
                 //повторная проверка учетных данных, потому что в идеале они могли устареть,
@@ -54,16 +63,16 @@ namespace Contacts
                 // + получаем всю инфу про пользователя
                 if(authorization.Login(settingsManager.Login, settingsManager.Password))
                 {
-                    NavigationService.NavigateAsync($"{nameof(MainListView)}");
+                    NavigationService.NavigateAsync("/NavigationPage/MainListView");
                 }
                 else
                 {
-                    NavigationService.NavigateAsync($"{nameof(SignInView)}");
+                    NavigationService.NavigateAsync("/NavigationPage/SignInView");
                 }
             }
             else
             {
-                NavigationService.NavigateAsync($"{nameof(SignInView)}");
+                NavigationService.NavigateAsync("/NavigationPage/SignInView");
             }
         }
 

@@ -1,8 +1,12 @@
 ﻿using Contacts.Models;
+using Contacts.Services.Authorization;
+using Contacts.Services.Contacts;
 using Contacts.Services.Repository;
 using Prism.Mvvm;
+using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -15,16 +19,41 @@ namespace Contacts.ViewModels
         public string Title { get; set; }
         public bool IsCreateMode { get; set; }
 
-        private IRepository _repository;
-        public AddEditProfileViewModel(IRepository repository)
+        private IUserContacts _contacts;
+        private IAuthorization _authorization;
+        private INavigationService _navigationService;
+        public AddEditProfileViewModel(IUserContacts contacts, IAuthorization authorization, INavigationService navigationService)
         {
-            _repository = repository;
+            _contacts = contacts;
+            _authorization = authorization;
+            _navigationService = navigationService;
 
+            IsEnable = false;
             IsCreateMode = true;
 
-            // ИСПРАВИТЬ
-            Title = "Add Contact";
+            if (IsCreateMode)
+            {
+                Title = "Add Contact";
+            }
+            else
+            {
+                Title = "Edit Contact";
+            }
+
             _pathImage = "user.png";
+        }
+
+        private bool _isEnable;
+        public bool IsEnable
+        {
+            get => _isEnable;
+            set
+            {
+                if (SetProperty(ref _isEnable, value))
+                {
+                    RaisePropertyChanged(nameof(OnSaveContactCommand));
+                }
+            }
         }
 
         //fields contact
@@ -33,42 +62,63 @@ namespace Contacts.ViewModels
         private string _description;
         private string _number;
         private string _pathImage;
-
+        
         public string Nick { get => _nick; set => SetProperty(ref _nick, value); }
         public string FullName { get => _fullName; set => SetProperty(ref _fullName, value); }
         public string Description { get => _description; set => SetProperty(ref _description, value); }
         public string Number { get => _number; set => SetProperty(ref _number, value); }
         public string PathImage { get => _pathImage; set => SetProperty(ref _pathImage, value); }
 
-        public ICommand OnAddContactCommand => new Command(AddContactCommand);
-
-        private async void AddContactCommand(object obj)
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            if (IsCreateMode)
-            {
-                var contact = new Contact()
-                {
-                    Autor = 1, // ИСПРАВИТЬ
-                    Nick = _fullName,
-                    FullName = _fullName,
-                    Description = _description,
-                    Number = _number,
-                    PathImage = _pathImage,
-                    TimeCreating = DateTime.Now
-                };
+            base.OnPropertyChanged(args);
 
-                await _repository.InsertAsync(contact);
+            switch (args.PropertyName)
+            {
+                case nameof(Nick):
+                    IsEnable = !string.IsNullOrWhiteSpace(Nick) && !string.IsNullOrWhiteSpace(FullName);
+                    break;
+                case nameof(FullName):
+                    IsEnable = !string.IsNullOrWhiteSpace(Nick) && !string.IsNullOrWhiteSpace(FullName);
+                    break;
+            }
+        }
+
+        public ICommand OnSaveContactCommand => new Command(
+            execute: () =>
+            {
+                if (IsCreateMode)
+                {
+                    var contact = new Contact()
+                    {
+                        Autor = _authorization.Profile.Id,
+                        Nick = _nick,
+                        FullName = _fullName,
+                        Description = _description,
+                        Number = _number,
+                        PathImage = _pathImage,
+                        TimeCreating = DateTime.Now
+                    };
+
+                    _contacts.Add(contact);
+
+                    _navigationService.GoBackAsync();
+                }
+                else
+                {
+                    //update
+                }
 
                 Nick = "";
                 FullName = "";
                 Description = "";
                 Number = "";
                 PathImage = "user.png";
-            }
-            else
+            },
+            canExecute: () =>
             {
-                //update
+                return IsEnable;
             }
-        }
+        );
     }
 }

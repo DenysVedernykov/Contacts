@@ -134,7 +134,6 @@
     <Content Include="editing.png" />
     <Content Include="floppyDisk.png" />
     <Content Include="icLauncher.png" />
-    <Content Include="leftArrow.png" />
     <Content Include="logOut.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="settings.png" />

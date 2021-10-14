@@ -12,5 +12,6 @@ namespace Contacts.Services.Contacts
         Task<int> Update(Contact contact);
         Task<int> Delete(Contact contact);
         List<Contact> GetAllContact(string typeSort);
+        Task<Contact> GetContactById(int id);
     }
 }

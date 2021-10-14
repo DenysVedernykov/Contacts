@@ -1,13 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Contacts.Views.SignInView">
-    
+             x:Class="Contacts.Views.SignInView"
+             Title="Users SignIn">
     <ContentPage.Content>
         <StackLayout>
-            <Frame BackgroundColor="#084896" Padding="12" CornerRadius="0">
-                <Label Text="Users SignIn" FontFamily="Arial" TextColor="White" FontSize="20"/>
-            </Frame>
             <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
                 <Entry Text="{Binding Login}" Placeholder="Login" VerticalTextAlignment="Center"/>
                 <Entry Text="{Binding Password}" Placeholder="Password" VerticalTextAlignment="Center" IsPassword ="True"/>

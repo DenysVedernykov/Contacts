@@ -24,6 +24,11 @@ namespace Contacts.Services.Contacts
             return await _repository.InsertAsync(contact);
         }
 
+        public async Task<int> Update(Contact contact)
+        {
+            return await _repository.UpdateAsync(contact);
+        }
+
         public async Task<int> Delete(Contact contact)
         {
             return await _repository.DeleteAsync(contact);
@@ -39,13 +44,13 @@ namespace Contacts.Services.Contacts
             else
             {
                 List<Contact> list = result.Result;
-                return  list.Where(row => row.Autor == _authorization.Profile.Id).OrderBy(row => row.GetType().GetField(typeSort).GetValue(row)).ToList();
+                return list.Where(row => row.Autor == _authorization.Profile.Id).OrderBy(row => row.GetType().GetProperty(typeSort).GetValue(row, null)).ToList();
             }
         }
 
-        public async Task<int> Update(Contact contact)
+        public async Task<Contact> GetContactById(int id)
         {
-            return await _repository.UpdateAsync(contact);
+            return await _repository.SearchByIdAsync<Contact>(id);
         }
     }
 }

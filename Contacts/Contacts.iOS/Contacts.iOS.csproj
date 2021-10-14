@@ -82,12 +82,6 @@
     <ImageAsset Include="Assets.xcassets\Images1.imageset\icLauncher.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\Images2.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\Images2.imageset\leftArrow.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\Images3.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>

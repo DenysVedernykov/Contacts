@@ -34,19 +34,24 @@ namespace Contacts.ViewModels
         {
             base.OnPropertyChanged(args);
 
-            bool isEnable = true;
-            if ((Login == "") || (Password == "") || (ConfirmPassword == ""))
+            switch (args.PropertyName)
             {
-                isEnable = false;
+                case nameof(Login):
+                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(ConfirmPassword);
+                    break;
+                case nameof(Password):
+                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(ConfirmPassword);
+                    break;
+                case nameof(ConfirmPassword):
+                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(ConfirmPassword);
+                    break;
             }
-
-            EnableButton = isEnable;
         }
 
         //fields user
-        private string _login = "";
-        private string _password = "";
-        private string _confirmPassword = "";
+        private string _login;
+        private string _password;
+        private string _confirmPassword;
 
         public string Login { get => _login; set => SetProperty(ref _login, value); }
         public string Password { get => _password; set => SetProperty(ref _password, value); }
@@ -66,7 +71,7 @@ namespace Contacts.ViewModels
                             _authorization.Reg(Login, Password);
                             _settingsManager.Login = Login;
 
-                            await _navigationService.NavigateAsync("/SignInView");
+                            await _navigationService.NavigateAsync("/NavigationPage/SignInView");
                         }
                         else
                         {
@@ -103,12 +108,6 @@ namespace Contacts.ViewModels
                     OkText = "Ok"
                 });
             }
-        }
-
-        public ICommand OnBackCommand => new Command(BackCommand);
-        private async void BackCommand(object obj)
-        {
-            await _navigationService.GoBackAsync();
         }
     }
 }
