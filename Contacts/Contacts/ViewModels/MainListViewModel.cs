@@ -34,13 +34,19 @@ namespace Contacts.ViewModels
             _navigationService = navigationService;
 
             Items = new ObservableCollection<Contact>();
-            ExecuteLoadItemsCommand();
+            GetItemsCommand();
         }
 
         public ObservableCollection<Contact> Items { get; }
 
         private Contact _selectedItem;
         public Contact SelectedItem { get => _selectedItem; set => SetProperty(ref _selectedItem, value); }
+
+        private bool _isRefreshing;
+        public bool IsRefreshing { get => _isRefreshing; set => SetProperty(ref _isRefreshing, value); }
+
+        private bool _isEmpty;
+        public bool IsEmpty { get => _isEmpty; set => SetProperty(ref _isEmpty, value); }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
@@ -57,8 +63,11 @@ namespace Contacts.ViewModels
             }
         }
 
-        private void ExecuteLoadItemsCommand()
+        public ICommand OnRefreshCommand => new Command(GetItemsCommand);
+        private void GetItemsCommand()
         {
+            IsRefreshing = true;
+
             Items.Clear();
 
             List<Contact> items = _contacts.GetAllContact(_settingsManager.Sort);
@@ -66,6 +75,9 @@ namespace Contacts.ViewModels
             {
                 Items.Add(item);
             }
+
+            IsEmpty = items.Count == 0;
+            IsRefreshing = false;
         }
 
         public ICommand OnExitCommand => new Command(ExitCommand);

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Helper="clr-namespace:Contacts.Helper"
              x:Class="Contacts.Views.MainListView"
              Title="Main List"
              BackgroundColor="White">
@@ -8,17 +9,27 @@
         <ToolbarItem IconImageSource="logOut.png" Command="{Binding OnExitCommand}"/>
         <ToolbarItem IconImageSource="settings.png" Command="{Binding OnOpenSettingsCommand}"/>
     </ContentPage.ToolbarItems>
+     <ContentPage.Resources>
+        <ResourceDictionary>
+            <Helper:Converter x:Key="Converter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Label Grid.Row="0" IsVisible="{Binding IsEmpty}" Text="No profiles added" VerticalOptions="Center" HorizontalOptions="Center"/>
             <ListView Grid.Row="0"
                       HasUnevenRows="True"
                       ItemsSource="{Binding Items}"
                       SelectionMode="Single"
                       SelectedItem="{Binding SelectedItem}"
                       CachingStrategy="RecycleElement"
+                      IsVisible="{Binding IsEmpty, Converter={StaticResource Converter}}"
+                      IsPullToRefreshEnabled="true"
+                      IsRefreshing="{Binding IsRefreshing}"
+                      RefreshCommand="{Binding OnRefreshCommand}"
               >
                 <ListView.ItemTemplate>
                     <DataTemplate>
