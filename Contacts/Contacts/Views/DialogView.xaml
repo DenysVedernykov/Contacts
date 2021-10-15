@@ -6,7 +6,11 @@
        prism:ViewModelLocator.AutowireViewModel="True"
        prism:DialogLayout.RelativeWidthRequest="{OnIdiom Default=0.75, Desktop=0.5}"
        HasShadow="false"
-       BackgroundColor="White">
+       BackgroundColor="White"
+       >
+    <Frame.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding CloseCommand}"/>
+    </Frame.GestureRecognizers>
     <StackLayout>
         <Frame HeightRequest="210" Padding="0" BorderColor="Transparent">
             <Image Source="{Binding PathImage}" Aspect="AspectFit"/>
@@ -15,11 +19,5 @@
         <Label Text="{Binding FullName}" VerticalTextAlignment="Center"/>
         <Label Text="{Binding Number}"  VerticalTextAlignment="Center"/>
         <Label Text="{Binding Description}" HeightRequest="150"/>
-        
-        <Button Text="Close"
-                Command="{Binding CloseCommand}"
-                TextColor="White"
-                HorizontalOptions="FillAndExpand"
-                Background="BlueViolet"/>
     </StackLayout>
 </Frame>

@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Helper="clr-namespace:Contacts.Helper"
+             xmlns:Behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              x:Class="Contacts.Views.MainListView"
              Title="Main List"
              BackgroundColor="White">
@@ -23,17 +24,18 @@
             <ListView Grid.Row="0"
                       HasUnevenRows="True"
                       ItemsSource="{Binding Items}"
-                      SelectionMode="Single"
-                      SelectedItem="{Binding SelectedItem}"
-                      CachingStrategy="RecycleElement"
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                       IsVisible="{Binding IsEmpty, Converter={StaticResource Converter}}"
                       IsPullToRefreshEnabled="true"
                       IsRefreshing="{Binding IsRefreshing}"
                       RefreshCommand="{Binding OnRefreshCommand}"
               >
+                <ListView.Behaviors>
+                    <Behaviors:EventToCommandBehavior Command="{Binding OnItemTapped}" EventName="ItemTapped"/>
+                </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell ViewCell.IsContextActionsLegacyModeEnabled="true">
+                        <ViewCell>
                             <ViewCell.ContextActions>
                                 <MenuItem Text="Edit" Command="{Binding EditCommand}" CommandParameter="{Binding .}"/>
                                 <MenuItem Text="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding .}"/>

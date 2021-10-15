@@ -57,7 +57,6 @@ namespace Contacts.ViewModels
         public string Password { get => _password; set => SetProperty(ref _password, value); }
 
         public ICommand OnLoginCommand => new Command(LoginCommand);
-
         private async void LoginCommand(object obj)
         {
             if(_authorization.Login(_login, _password))
@@ -83,8 +82,8 @@ namespace Contacts.ViewModels
                 Password = "";
             }
         }
-        public ICommand OnRegCommand => new Command(RegCommand);
 
+        public ICommand OnRegCommand => new Command(RegCommand);
         private async void RegCommand(object obj)
         {
             await _navigationService.NavigateAsync("SignUpView");

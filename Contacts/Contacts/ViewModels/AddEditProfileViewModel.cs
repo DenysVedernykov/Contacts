@@ -1,4 +1,5 @@
-﻿using Contacts.Models;
+﻿using Acr.UserDialogs;
+using Contacts.Models;
 using Contacts.Services.Authorization;
 using Contacts.Services.Contacts;
 using Contacts.Services.Repository;
@@ -13,12 +14,9 @@ using Xamarin.Forms;
 
 namespace Contacts.ViewModels
 {
-    class AddEditProfileViewModel : BindableBase
+    class AddEditProfileViewModel : BindableBase, IInitialize
     {
-        //settings page
-        public string Title { get; set; }
-        public bool IsCreateMode { get; set; }
-
+        private PhoneContact editContact;
         private IUserContacts _contacts;
         private IAuthorization _authorization;
         private INavigationService _navigationService;
@@ -30,19 +28,45 @@ namespace Contacts.ViewModels
 
             IsEnable = false;
             IsCreateMode = true;
-
-            if (IsCreateMode)
-            {
-                Title = "Add Contact";
-            }
-            else
-            {
-                Title = "Edit Contact";
-            }
-
             _pathImage = "user.png";
         }
 
+        public void Initialize(INavigationParameters parameters)
+        {
+            if (parameters.Count > 0)
+            {
+                string param = parameters["IsCreateMode"].ToString();
+
+                if (param == "true")
+                {
+                    IsCreateMode = true;
+                }
+                else
+                {
+                    IsCreateMode = false;
+                }
+
+                if (IsCreateMode)
+                {
+                    Title = "Add Contact";
+                }
+                else
+                {
+                    Title = "Edit Contact";
+                    editContact = parameters["Contact"] as PhoneContact;
+
+                    Nick = editContact.Nick;
+                    FullName = editContact.FullName;
+                    Description = editContact.Description;
+                    Number = editContact.Number;
+                    PathImage = editContact.PathImage;
+                }
+            }
+        }
+
+        //settings page
+        public string Title { get; set; }
+        public bool IsCreateMode { get; set; }
         private bool _IsEnable;
         public bool IsEnable
         {
@@ -101,19 +125,21 @@ namespace Contacts.ViewModels
                     };
 
                     _contacts.Add(contact);
-
-                    _navigationService.GoBackAsync();
                 }
                 else
                 {
                     //update
+                    editContact.Nick = _nick;
+                    editContact.FullName = _fullName;
+                    editContact.Description = _description;
+                    editContact.Number = _number;
+                    editContact.PathImage = _pathImage;
+
+                    _contacts.Update(editContact);
                 }
 
-                Nick = "";
-                FullName = "";
-                Description = "";
-                Number = "";
-                PathImage = "user.png";
+                NavigationParameters param = new NavigationParameters("Refresh=true");
+                _navigationService.GoBackAsync(param);
             },
             canExecute: () =>
             {

@@ -21,7 +21,7 @@ using Xamarin.Forms;
 
 namespace Contacts.ViewModels
 {
-    class MainListViewModel: BindableBase
+    class MainListViewModel: BindableBase, INavigationAware
     {
         private IDialogService _dialogService;
         private IUserContacts _contacts;
@@ -39,8 +39,26 @@ namespace Contacts.ViewModels
 
             Items = new ObservableCollection<PhoneContactViewModel>();
             GetItemsCommand();
+
+        }
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            
+        }
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+            if (parameters.Count > 0)
+            {
+                string param = parameters["Refresh"].ToString();
+
+                if (param == "true")
+                {
+                    GetItemsCommand();
+                }
+            }
         }
 
+        public ICommand OnItemTapped => new Command(ItemTapped);
         public ICommand OnExitCommand => new Command(ExitCommand);
         public ICommand OnRefreshCommand => new Command(GetItemsCommand);
         public ICommand OnOpenSettingsCommand => new Command(OpenSettingsCommand);
@@ -54,23 +72,8 @@ namespace Contacts.ViewModels
         private bool _isRefreshing;
         public bool IsRefreshing { get => _isRefreshing; set => SetProperty(ref _isRefreshing, value); }
 
-        private PhoneContact _selectedItem;
-        public PhoneContact SelectedItem { get => _selectedItem; set => SetProperty(ref _selectedItem, value); }
-
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
-        {
-            base.OnPropertyChanged(args);
-
-            switch (args.PropertyName)
-            {
-                case nameof(SelectedItem):
-                    var param = new DialogParameters();
-                    param.Add("Id", _selectedItem.Id);
-
-                    _dialogService.ShowDialog("DialogView", param);
-                    break;
-            }
-        }
+        private PhoneContactViewModel _selectedItem;
+        public PhoneContactViewModel SelectedItem { get => _selectedItem; set => SetProperty(ref _selectedItem, value); }
 
         private void GetItemsCommand()
         {
@@ -96,6 +99,14 @@ namespace Contacts.ViewModels
             IsRefreshing = false;
         }
 
+        private void ItemTapped(object obj)
+        {
+            var param = new DialogParameters();
+            param.Add("Id", _selectedItem.Id);
+
+            _dialogService.ShowDialog("DialogView", param);
+        }
+
         private async void ExitCommand(object obj)
         {
             _authorization.LogOut();
@@ -117,21 +128,43 @@ namespace Contacts.ViewModels
             await _navigationService.NavigateAsync("SettingsView");
         }
 
-        private async void OpenAddContactCommand(object obj)
+        private void OpenAddContactCommand(object obj)
         {
             NavigationParameters param = new NavigationParameters("IsCreateMode=true");
 
-            await _navigationService.NavigateAsync("AddEditProfileView", param);
+            _navigationService.NavigateAsync("AddEditProfileView", param);
         }
 
         private void EditCommand(object obj)
         {
-            
+            PhoneContactViewModel tmp = obj as PhoneContactViewModel;
+            PhoneContact contact = tmp.ToContact();
+
+            NavigationParameters param = new NavigationParameters("IsCreateMode=false");
+            param.Add("Contact", contact);
+
+            _navigationService.NavigateAsync("AddEditProfileView", param);
         }
 
-        private void DeleteCommand(object obj)
+        private async void DeleteCommand(object obj)
         {
-            
+            PhoneContactViewModel tmp = obj as PhoneContactViewModel;
+            PhoneContact contact = tmp.ToContact();
+
+            var confirmConfig = new ConfirmConfig()
+            {
+                Message = "do you confirm the deletion?",
+                OkText = "Ok",
+                CancelText = "Cancel"
+            };
+
+            bool confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+
+            if (confirm)
+            {
+                await _contacts.Delete(contact);
+                GetItemsCommand();
+            }
         }
     }
 }
