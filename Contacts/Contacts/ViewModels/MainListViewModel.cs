@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Contacts.Helper;
 using Contacts.Models;
 using Contacts.Services.Authorization;
 using Contacts.Services.Contacts;
@@ -10,9 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Contacts.ViewModels
@@ -33,20 +37,25 @@ namespace Contacts.ViewModels
             _settingsManager = settingsManager;
             _navigationService = navigationService;
 
-            Items = new ObservableCollection<Contact>();
+            Items = new ObservableCollection<PhoneContactViewModel>();
             GetItemsCommand();
         }
 
-        public ObservableCollection<Contact> Items { get; }
+        public ICommand OnExitCommand => new Command(ExitCommand);
+        public ICommand OnRefreshCommand => new Command(GetItemsCommand);
+        public ICommand OnOpenSettingsCommand => new Command(OpenSettingsCommand);
+        public ICommand OnOpenAddContactCommand => new Command(OpenAddContactCommand);
 
-        private Contact _selectedItem;
-        public Contact SelectedItem { get => _selectedItem; set => SetProperty(ref _selectedItem, value); }
+        public ObservableCollection<PhoneContactViewModel> Items { get; }
+
+        private bool _isEmpty;
+        public bool IsEmpty { get => _isEmpty; set => SetProperty(ref _isEmpty, value); }
 
         private bool _isRefreshing;
         public bool IsRefreshing { get => _isRefreshing; set => SetProperty(ref _isRefreshing, value); }
 
-        private bool _isEmpty;
-        public bool IsEmpty { get => _isEmpty; set => SetProperty(ref _isEmpty, value); }
+        private PhoneContact _selectedItem;
+        public PhoneContact SelectedItem { get => _selectedItem; set => SetProperty(ref _selectedItem, value); }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
@@ -63,24 +72,30 @@ namespace Contacts.ViewModels
             }
         }
 
-        public ICommand OnRefreshCommand => new Command(GetItemsCommand);
         private void GetItemsCommand()
         {
             IsRefreshing = true;
+            
+            var editCommand = new Command(EditCommand);
+            var deleteCommand = new Command(DeleteCommand);
 
             Items.Clear();
 
-            List<Contact> items = _contacts.GetAllContact(_settingsManager.Sort);
-            foreach (var item in items)
+            List<PhoneContact> data = _contacts.GetAllContact(_settingsManager.Sort);
+            List<PhoneContactViewModel> list2 = data.Select(x => x.ToContactViewModel()).ToList();
+
+            foreach (var contact in list2)
             {
-                Items.Add(item);
+                contact.DeleteCommand = deleteCommand;
+                contact.EditCommand = editCommand;
+
+                Items.Add(contact);
             }
 
-            IsEmpty = items.Count == 0;
+            IsEmpty = data.Count == 0;
             IsRefreshing = false;
         }
 
-        public ICommand OnExitCommand => new Command(ExitCommand);
         private async void ExitCommand(object obj)
         {
             _authorization.LogOut();
@@ -89,20 +104,34 @@ namespace Contacts.ViewModels
             _settingsManager.Password = "";
 
             await _navigationService.NavigateAsync("/NavigationPage/SignInView");
+
+            //await Share.RequestAsync(new ShareFileRequest
+            //{
+            //    Title = "FN:",
+            //    File = new ShareFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ContactsBook.db3"))
+            //});
         }
 
-        public ICommand OnOpenSettingsCommand => new Command(OpenSettingsCommand);
         private async void OpenSettingsCommand(object obj)
         {
             await _navigationService.NavigateAsync("SettingsView");
         }
 
-        public ICommand OnOpenAddContactCommand => new Command(OpenAddContactCommand);
         private async void OpenAddContactCommand(object obj)
         {
             NavigationParameters param = new NavigationParameters("IsCreateMode=true");
 
             await _navigationService.NavigateAsync("AddEditProfileView", param);
+        }
+
+        private void EditCommand(object obj)
+        {
+            
+        }
+
+        private void DeleteCommand(object obj)
+        {
+            
         }
     }
 }

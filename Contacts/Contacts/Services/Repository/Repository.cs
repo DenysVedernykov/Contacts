@@ -20,7 +20,7 @@ namespace Contacts.Services.Repository
                 var database = new SQLiteAsyncConnection(path);
 
                 database.CreateTableAsync<User>().Wait();
-                database.CreateTableAsync<Contact>().Wait();
+                database.CreateTableAsync<PhoneContact>().Wait();
 
                 return database;
             });

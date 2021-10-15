@@ -19,38 +19,38 @@ namespace Contacts.Services.Contacts
             _authorization = authorization;
         }
 
-        public async Task<int> Add(Contact contact)
+        public async Task<int> Add(PhoneContact contact)
         {
             return await _repository.InsertAsync(contact);
         }
 
-        public async Task<int> Update(Contact contact)
+        public async Task<int> Update(PhoneContact contact)
         {
             return await _repository.UpdateAsync(contact);
         }
 
-        public async Task<int> Delete(Contact contact)
+        public async Task<int> Delete(PhoneContact contact)
         {
             return await _repository.DeleteAsync(contact);
         }
 
-        public List<Contact> GetAllContact(string typeSort)
+        public List<PhoneContact> GetAllContact(string typeSort)
         {
-            var result = _repository.GetAllRowsAsync<Contact>();
+            var result = _repository.GetAllRowsAsync<PhoneContact>();
             if (result == null)
             {
                 return null;
             }
             else
             {
-                List<Contact> list = result.Result;
+                List<PhoneContact> list = result.Result;
                 return list.Where(row => row.Autor == _authorization.Profile.Id).OrderBy(row => row.GetType().GetProperty(typeSort).GetValue(row, null)).ToList();
             }
         }
 
-        public async Task<Contact> GetContactById(int id)
+        public async Task<PhoneContact> GetContactById(int id)
         {
-            return await _repository.SearchByIdAsync<Contact>(id);
+            return await _repository.SearchByIdAsync<PhoneContact>(id);
         }
     }
 }

@@ -8,10 +8,10 @@ namespace Contacts.Services.Contacts
 {
     public interface IUserContacts
     {
-        Task<int> Add(Contact contact);
-        Task<int> Update(Contact contact);
-        Task<int> Delete(Contact contact);
-        List<Contact> GetAllContact(string typeSort);
-        Task<Contact> GetContactById(int id);
+        Task<int> Add(PhoneContact contact);
+        Task<int> Update(PhoneContact contact);
+        Task<int> Delete(PhoneContact contact);
+        List<PhoneContact> GetAllContact(string typeSort);
+        Task<PhoneContact> GetContactById(int id);
     }
 }

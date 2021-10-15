@@ -33,10 +33,10 @@
               >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <ViewCell ViewCell.IsContextActionsLegacyModeEnabled="true">
                             <ViewCell.ContextActions>
-                                <MenuItem Text="Edit" CommandParameter="{Binding Id}"/>
-                                <MenuItem Text="Delete"/>
+                                <MenuItem Text="Edit" Command="{Binding EditCommand}" CommandParameter="{Binding .}"/>
+                                <MenuItem Text="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding .}"/>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout Orientation="Horizontal">

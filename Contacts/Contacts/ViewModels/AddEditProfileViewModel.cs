@@ -43,13 +43,13 @@ namespace Contacts.ViewModels
             _pathImage = "user.png";
         }
 
-        private bool _isEnable;
+        private bool _IsEnable;
         public bool IsEnable
         {
-            get => _isEnable;
+            get => _IsEnable;
             set
             {
-                if (SetProperty(ref _isEnable, value))
+                if (SetProperty(ref _IsEnable, value))
                 {
                     RaisePropertyChanged(nameof(OnSaveContactCommand));
                 }
@@ -89,7 +89,7 @@ namespace Contacts.ViewModels
             {
                 if (IsCreateMode)
                 {
-                    var contact = new Contact()
+                    var contact = new PhoneContact()
                     {
                         Autor = _authorization.Profile.Id,
                         Nick = _nick,
