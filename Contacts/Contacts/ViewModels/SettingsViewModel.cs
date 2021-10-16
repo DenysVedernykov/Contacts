@@ -88,7 +88,10 @@ namespace Contacts.ViewModels
                     _settingsManager.NightTheme = IsToggled;
                     break;
                 case nameof(SelectedIndex):
-                    _settingsManager.Lang = langs[Items[SelectedIndex]];
+                    if (SelectedIndex > -1)
+                    {
+                        _settingsManager.Lang = langs[Items[SelectedIndex]];
+                    }
                     break;
             }
         }
