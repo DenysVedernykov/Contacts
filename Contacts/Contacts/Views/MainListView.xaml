@@ -31,7 +31,7 @@
                       RefreshCommand="{Binding OnRefreshCommand}"
               >
                 <ListView.Behaviors>
-                    <Behaviors:EventToCommandBehavior Command="{Binding OnItemTapped}" EventName="ItemTapped"/>
+                    <Behaviors:EventToCommandBehavior Command="{Binding OnItemTapped}" EventName="ItemTapped" EventArgsConverterParameter="{Binding .}"/>
                 </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -42,14 +42,13 @@
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout Orientation="Horizontal">
-                                    <Frame HeightRequest="80" Padding="0" BorderColor="Transparent">
+                                    <Frame HeightRequest="80" Padding="0" CornerRadius="40" BorderColor="Transparent">
                                         <Image Source="{Binding PathImage}" Aspect="AspectFit"/>
                                     </Frame>
                                     <StackLayout>
                                         <Label Text="{Binding Nick}" FontSize="12" />
                                         <Label Text="{Binding FullName}" FontSize="12" />
                                         <Label Text="{Binding Number}" FontSize="12" />
-                                        <Label Text="{Binding TimeCreating}" FontSize="12" />
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell.View>
@@ -57,7 +56,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Command="{Binding OnOpenAddContactCommand}" IsEnabled="False" Grid.Row="0" Text="Add" BorderColor="#2b3c3c" BorderWidth="1" FontAttributes="Bold" BackgroundColor="#4ba862" BorderRadius="35" TextColor="White" HorizontalOptions="End" WidthRequest="70" HeightRequest="70" Margin="0,0,20,22" VerticalOptions="End"/>
+            <Button Command="{Binding OnOpenAddContactCommand}" IsEnabled="False" Grid.Row="0" Text="Add" BorderColor="#093b7b" BorderWidth="8" FontAttributes="Bold" BackgroundColor="#4294ff" BorderRadius="35" TextColor="White" HorizontalOptions="End" WidthRequest="70" HeightRequest="70" Margin="0,0,20,22" VerticalOptions="End"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

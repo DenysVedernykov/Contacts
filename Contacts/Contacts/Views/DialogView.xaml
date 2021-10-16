@@ -19,5 +19,6 @@
         <Label Text="{Binding FullName}" VerticalTextAlignment="Center"/>
         <Label Text="{Binding Number}"  VerticalTextAlignment="Center"/>
         <Label Text="{Binding Description}" HeightRequest="150"/>
+        <Label Text="{Binding TimeCreating}" VerticalTextAlignment="Center"/>
     </StackLayout>
 </Frame>

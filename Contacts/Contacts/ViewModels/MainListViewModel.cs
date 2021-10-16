@@ -101,10 +101,13 @@ namespace Contacts.ViewModels
 
         private void ItemTapped(object obj)
         {
-            var param = new DialogParameters();
-            param.Add("Id", _selectedItem.Id);
+            if (_selectedItem != null)
+            {
+                var param = new DialogParameters();
+                param.Add("Id", _selectedItem.Id);
 
-            _dialogService.ShowDialog("DialogView", param);
+                _dialogService.ShowDialog("DialogView", param);
+            }
         }
 
         private async void ExitCommand(object obj)

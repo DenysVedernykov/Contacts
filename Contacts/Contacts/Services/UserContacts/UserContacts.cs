@@ -48,9 +48,9 @@ namespace Contacts.Services.Contacts
             }
         }
 
-        public async Task<PhoneContact> GetContactById(int id)
+        public Task<PhoneContact> GetContactById(int id)
         {
-            return await _repository.SearchByIdAsync<PhoneContact>(id);
+            return  _repository.SearchByIdAsync<PhoneContact>(id);
         }
     }
 }
