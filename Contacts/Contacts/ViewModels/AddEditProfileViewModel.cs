@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -40,18 +41,11 @@ namespace Contacts.ViewModels
                 if (param == "true")
                 {
                     IsCreateMode = true;
-                }
-                else
-                {
-                    IsCreateMode = false;
-                }
-
-                if (IsCreateMode)
-                {
                     Title = "Add Contact";
                 }
                 else
                 {
+                    IsCreateMode = false;
                     Title = "Edit Contact";
                     editContact = parameters["Contact"] as PhoneContact;
 
@@ -104,6 +98,12 @@ namespace Contacts.ViewModels
                     break;
                 case nameof(FullName):
                     IsEnable = !string.IsNullOrWhiteSpace(Nick) && !string.IsNullOrWhiteSpace(FullName);
+                    break;
+                case nameof(Description):
+                    IsEnable = Description.Length <= 120;
+                    break;
+                case nameof(Number):
+                    IsEnable = Number.Length <= 20 && Regex.IsMatch(Number.Trim(), @"^[+]?[0-9]{5,20}$", RegexOptions.Singleline);
                     break;
             }
         }
