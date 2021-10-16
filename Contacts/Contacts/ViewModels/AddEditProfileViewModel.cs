@@ -8,9 +8,11 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Contacts.ViewModels
@@ -146,5 +148,44 @@ namespace Contacts.ViewModels
                 return IsEnable;
             }
         );
+
+        public ICommand OnTapImageContact => new Command(async (obj) =>
+        {
+            
+        });
+
+        public ICommand OnImageFromGallery => new Command(async (obj) =>
+        {
+            var photo = await MediaPicker.PickPhotoAsync();
+            PathImage = photo.FullPath;
+        });
+
+        public ICommand OnImageFromCamera => new Command(async (obj) =>
+        {
+            try
+            {
+                var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
+                {
+                    Title = $"xamarin.{DateTime.Now.ToString("dd.MM.yyyy_hh.mm.ss")}.png"
+                });
+
+                var newFile = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
+
+                using (var stream = await photo.OpenReadAsync())
+                using (var newStream = File.OpenWrite(newFile))
+                await stream.CopyToAsync(newStream);
+
+                PathImage = photo.FullPath;
+            }
+            catch (Exception e)
+            {
+                await UserDialogs.Instance.AlertAsync(new AlertConfig()
+                {
+                    Title = "Error message",
+                    Message = e.Message,
+                    OkText = "Ok"
+                });
+            }
+       });
     }
 }

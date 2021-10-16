@@ -9,6 +9,9 @@
     <ContentPage.Content>
         <StackLayout Spacing="0">
             <Frame HeightRequest="210" Padding="0" BorderColor="Transparent">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OnImageFromGallery}"/>
+                </Frame.GestureRecognizers>
                 <Image Source="{Binding PathImage}" Aspect="AspectFit"/>
             </Frame>
             <Entry Text="{Binding Nick}" Placeholder="Nick" VerticalTextAlignment="Center"/>
