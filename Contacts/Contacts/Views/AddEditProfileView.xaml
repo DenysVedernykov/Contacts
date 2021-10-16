@@ -10,9 +10,9 @@
         <StackLayout Spacing="0">
             <Frame HeightRequest="210" Padding="0" BorderColor="Transparent">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding OnImageFromGallery}"/>
+                    <TapGestureRecognizer Command="{Binding OnTapImageContact}"/>
                 </Frame.GestureRecognizers>
-                <Image Source="{Binding PathImage}" Aspect="AspectFit"/>
+                <Image Source="{Binding PathImage}" Aspect="AspectFill"/>
             </Frame>
             <Entry Text="{Binding Nick}" Placeholder="Nick" VerticalTextAlignment="Center"/>
             <Entry Text="{Binding FullName}" Placeholder="Full Name" VerticalTextAlignment="Center"/>

@@ -131,9 +131,10 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="attach.png" />
+    <Content Include="camera.png" />
     <Content Include="editing.png" />
     <Content Include="floppyDisk.png" />
-    <Content Include="icLauncher.png" />
     <Content Include="logOut.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="settings.png" />

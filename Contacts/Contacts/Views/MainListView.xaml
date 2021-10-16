@@ -42,8 +42,8 @@
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout Orientation="Horizontal">
-                                    <Frame HeightRequest="80" Padding="0" CornerRadius="40" BorderColor="Transparent">
-                                        <Image Source="{Binding PathImage}" Aspect="AspectFit"/>
+                                    <Frame HeightRequest="80" WidthRequest="80" Padding="0" CornerRadius="40" BorderColor="Transparent">
+                                        <Image Source="{Binding PathImage}" Aspect="AspectFill"/>
                                     </Frame>
                                     <StackLayout>
                                         <Label Text="{Binding Nick}" FontSize="12" />

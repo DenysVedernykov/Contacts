@@ -151,13 +151,23 @@ namespace Contacts.ViewModels
 
         public ICommand OnTapImageContact => new Command(async (obj) =>
         {
-            
+            UserDialogs.Instance.ActionSheet(new ActionSheetConfig()
+                .SetTitle("Choose Type")
+                .Add("Pick at Gallery", () => this.OnImageFromGallery.Execute(null), "attach.png")
+                .Add("Take photo with camera", ()=> this.OnImageFromCamera.Execute(null), "camera.png")
+            );
         });
 
         public ICommand OnImageFromGallery => new Command(async (obj) =>
         {
-            var photo = await MediaPicker.PickPhotoAsync();
-            PathImage = photo.FullPath;
+            try
+            {
+                var photo = await MediaPicker.PickPhotoAsync();
+                PathImage = photo.FullPath;
+            }
+            catch (Exception e)
+            { 
+            }
         });
 
         public ICommand OnImageFromCamera => new Command(async (obj) =>
