@@ -41,11 +41,11 @@
                                 <MenuItem Text="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding .}"/>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
-                                <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Horizontal" Padding="10">
                                     <Frame HeightRequest="80" WidthRequest="80" Padding="0" CornerRadius="40" BorderColor="Transparent">
                                         <Image Source="{Binding PathImage}" Aspect="AspectFill"/>
                                     </Frame>
-                                    <StackLayout>
+                                    <StackLayout Margin="10, 0, 0, 0">
                                         <Label Text="{Binding Nick}" FontSize="12" />
                                         <Label Text="{Binding FullName}" FontSize="12" />
                                         <Label Text="{Binding Number}" FontSize="12" />

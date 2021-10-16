@@ -89,6 +89,27 @@ namespace Contacts.ViewModels
         public string Number { get => _number; set => SetProperty(ref _number, value); }
         public string PathImage { get => _pathImage; set => SetProperty(ref _pathImage, value); }
 
+        private bool Check()
+        {
+            bool result = !string.IsNullOrWhiteSpace(Nick) && !string.IsNullOrWhiteSpace(FullName);
+
+            if (Description != null)
+            {
+                result &= Description.Length <= 120;
+            }
+
+            if (Number != null)
+            {
+                result &= Number.Length > 0 && Number.Length <= 20
+                       && Regex.IsMatch(Number.Trim(), @"^[+]?[0-9]{5,20}$", RegexOptions.Singleline);
+            }
+            else
+            {
+                result = false;
+            }
+
+            return result;              
+        }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -96,16 +117,16 @@ namespace Contacts.ViewModels
             switch (args.PropertyName)
             {
                 case nameof(Nick):
-                    IsEnable = !string.IsNullOrWhiteSpace(Nick) && !string.IsNullOrWhiteSpace(FullName);
+                    IsEnable = Check();
                     break;
                 case nameof(FullName):
-                    IsEnable = !string.IsNullOrWhiteSpace(Nick) && !string.IsNullOrWhiteSpace(FullName);
+                    IsEnable = Check();
                     break;
                 case nameof(Description):
-                    IsEnable = Description.Length <= 120;
+                    IsEnable = Check();
                     break;
                 case nameof(Number):
-                    IsEnable = Number.Length <= 20 && Regex.IsMatch(Number.Trim(), @"^[+]?[0-9]{5,20}$", RegexOptions.Singleline);
+                    IsEnable = Check();
                     break;
             }
         }
@@ -151,11 +172,17 @@ namespace Contacts.ViewModels
 
         public ICommand OnTapImageContact => new Command(async (obj) =>
         {
-            UserDialogs.Instance.ActionSheet(new ActionSheetConfig()
-                .SetTitle("Choose Type")
-                .Add("Pick at Gallery", () => this.OnImageFromGallery.Execute(null), "attach.png")
-                .Add("Take photo with camera", ()=> this.OnImageFromCamera.Execute(null), "camera.png")
-            );
+            try
+            {
+                UserDialogs.Instance.ActionSheet(new ActionSheetConfig()
+                    .SetTitle("Choose Type")
+                    .Add("Pick at Gallery", () => this.OnImageFromGallery.Execute(null), "attach.png")
+                    .Add("Take photo with camera", () => this.OnImageFromCamera.Execute(null), "camera.png")
+                );
+            }
+            catch (Exception e)
+            {
+            }
         });
 
         public ICommand OnImageFromGallery => new Command(async (obj) =>

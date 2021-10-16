@@ -16,7 +16,7 @@
             </Frame>
             <Entry Text="{Binding Nick}" Placeholder="Nick" VerticalTextAlignment="Center"/>
             <Entry Text="{Binding FullName}" Placeholder="Full Name" VerticalTextAlignment="Center"/>
-            <Entry Text="{Binding Number}" Placeholder="+xxxxxxxxxxxx" VerticalTextAlignment="Center"/>
+            <Entry Keyboard="Telephone" Text="{Binding Number}" Placeholder="+xxxxxxxxxxxx" VerticalTextAlignment="Center"/>
             <Editor Text="{Binding Description} " Placeholder="Description" HeightRequest="200"/>
         </StackLayout>
     </ContentPage.Content>
