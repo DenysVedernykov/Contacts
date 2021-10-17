@@ -1,22 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Contacts.Views.SignInView">
+             x:Class="Contacts.Views.SignInView"
+             Title="Users SignIn">
     <ContentPage.Content>
         <StackLayout>
-            <Frame BackgroundColor="#084896" Padding="12" CornerRadius="0">
-                <Label Text="Users SignIn" FontFamily="Arial" TextColor="White" FontSize="20"/>
-            </Frame>
             <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
-                <Entry Placeholder="Login" VerticalTextAlignment="Center"/>
-                <Entry Placeholder="Password" VerticalTextAlignment="Center" IsPassword ="True"/>
+                <Entry Text="{Binding Login}" Placeholder="Login" VerticalTextAlignment="Center"/>
+                <Entry Text="{Binding Password}" Placeholder="Password" VerticalTextAlignment="Center" IsPassword ="True"/>
             </StackLayout>
             <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
-                <Button Text="SIGN IN" VerticalOptions="Center" BackgroundColor="DarkOrange"/>
+                <Button Command="{Binding OnLoginCommand}" IsEnabled="{Binding EnableButton}" Text="SIGN IN" VerticalOptions="Center" BackgroundColor="DarkOrange"/>
                 <Label VerticalOptions="Center" HorizontalOptions="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="SIGN UP" TextColor="Blue" TextDecorations="Underline"></Span>
+                            <Span Text="SIGN UP" TextColor="Blue" TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OnRegCommand}"/>
+                                </Span.GestureRecognizers>
+                            </Span>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>

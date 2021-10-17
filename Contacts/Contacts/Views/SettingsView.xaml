@@ -1,12 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Contacts.Views.SettingsView">
+             x:Class="Contacts.Views.SettingsView"
+             Title="Settings">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="30">
+            <Label Text="Sort:" Margin="0, 0, 0, 5"/>
+            <RadioButton Content="Nick" IsChecked="{Binding IsChecked1}" GroupName="sort"/>
+            <RadioButton Content="Full Name" IsChecked="{Binding IsChecked2}" GroupName="sort"/>
+            <RadioButton Content="Time Creating" IsChecked="{Binding IsChecked3}" GroupName="sort"/>
+            
+            <Label Text="Nigth mode:" Margin="0, 25, 0, 5"/>
+            <Switch IsToggled="{Binding IsToggled}" HorizontalOptions="Start"/>
+            
+            <Label Text="Language:" Margin="0, 25, 0, 5"/>
+            <Picker ItemsSource="{Binding Items}" SelectedIndex="{Binding SelectedIndex}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="Contacts.Views.DialogView"
+       xmlns:prism="http://prismlibrary.com"
+       prism:ViewModelLocator.AutowireViewModel="True"
+       prism:DialogLayout.RelativeWidthRequest="{OnIdiom Default=0.75, Desktop=0.5}"
+       HasShadow="false"
+       BackgroundColor="White"
+       >
+    <Frame.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding CloseCommand}"/>
+    </Frame.GestureRecognizers>
+    <StackLayout>
+        <Frame HeightRequest="210" Padding="0" BorderColor="Transparent">
+            <Image Source="{Binding PathImage}" Aspect="AspectFit"/>
+        </Frame>
+        <Label Text="{Binding Nick}" VerticalTextAlignment="Center" Margin="0, 15, 0, 0"/>
+        <Label Text="{Binding FullName}" VerticalTextAlignment="Center"/>
+        <Label Text="{Binding Number}"  VerticalTextAlignment="Center"/>
+        <Label Text="{Binding Description}" HeightRequest="150"/>
+        <Label Text="{Binding TimeCreating}" VerticalTextAlignment="Center"/>
+    </StackLayout>
+</Frame>
