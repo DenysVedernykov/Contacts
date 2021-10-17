@@ -77,8 +77,8 @@ namespace Contacts.ViewModels
                         {
                             await UserDialogs.Instance.AlertAsync(new AlertConfig()
                             {
-                                Message = "This login is already taken!",
-                                OkText = "Ok"
+                                Message = Resource.ResourceManager.GetString("LoginTaken", Resource.Culture),
+                                OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                             });
                         }
                     }
@@ -86,8 +86,8 @@ namespace Contacts.ViewModels
                     {
                         await UserDialogs.Instance.AlertAsync(new AlertConfig()
                         {
-                            Message = "Password must contain at least one uppercase letter, one lowercase letter and one number and must be at least 8 and no more than 16 characters!",
-                            OkText = "Ok"
+                            Message = Resource.ResourceManager.GetString("PasswordNoMatching", Resource.Culture),
+                            OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                         });
                     }
                 }
@@ -95,8 +95,8 @@ namespace Contacts.ViewModels
                 {
                     await UserDialogs.Instance.AlertAsync(new AlertConfig()
                     {
-                        Message = "The values in the UserPassword and ConfirmUserPassword fields must match!",
-                        OkText = "Ok"
+                        Message = Resource.ResourceManager.GetString("FieldsMustMatch", Resource.Culture),
+                        OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                     });
                 }
             }
@@ -104,8 +104,8 @@ namespace Contacts.ViewModels
             {
                 await UserDialogs.Instance.AlertAsync(new AlertConfig()
                 {
-                    Message = "Login must not start with a number and must be at least 4 and no more than 16 characters!",
-                    OkText = "Ok"
+                    Message = Resource.ResourceManager.GetString("LoginNoMAtching", Resource.Culture),
+                    OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                 });
             }
         }

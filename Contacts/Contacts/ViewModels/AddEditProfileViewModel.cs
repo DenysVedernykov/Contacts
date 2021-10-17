@@ -2,14 +2,13 @@
 using Contacts.Models;
 using Contacts.Services.Authorization;
 using Contacts.Services.Contacts;
-using Contacts.Services.Repository;
+using Contacts.Services.SettingsManager;
 using Prism.Mvvm;
 using Prism.Navigation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -38,17 +37,22 @@ namespace Contacts.ViewModels
         {
             if (parameters.Count > 0)
             {
-                string param = parameters["IsCreateMode"].ToString();
+                string param = "false";
+
+                if (parameters["IsCreateMode"] != null)
+                {
+                    param = parameters["IsCreateMode"].ToString();
+                }
 
                 if (param == "true")
                 {
                     IsCreateMode = true;
-                    Title = "Add Contact";
+                    Title = Resource.ResourceManager.GetString("AddContact", Resource.Culture);
                 }
                 else
                 {
                     IsCreateMode = false;
-                    Title = "Edit Contact";
+                    Title = Resource.ResourceManager.GetString("EditContact", Resource.Culture);
                     editContact = parameters["Contact"] as PhoneContact;
 
                     Nick = editContact.Nick;
@@ -108,7 +112,7 @@ namespace Contacts.ViewModels
                 result = false;
             }
 
-            return result;              
+            return result;
         }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
@@ -175,9 +179,9 @@ namespace Contacts.ViewModels
             try
             {
                 UserDialogs.Instance.ActionSheet(new ActionSheetConfig()
-                    .SetTitle("Choose Type")
-                    .Add("Pick at Gallery", () => this.OnImageFromGallery.Execute(null), "attach.png")
-                    .Add("Take photo with camera", () => this.OnImageFromCamera.Execute(null), "camera.png")
+                    .SetTitle(Resource.ResourceManager.GetString("ChooseType", Resource.Culture))
+                    .Add(Resource.ResourceManager.GetString("PickAtGallery", Resource.Culture), () => this.OnImageFromGallery.Execute(null), "attach.png")
+                    .Add(Resource.ResourceManager.GetString("TakePhotoWithCamera", Resource.Culture), () => this.OnImageFromCamera.Execute(null), "camera.png")
                 );
             }
             catch (Exception e)
@@ -218,7 +222,7 @@ namespace Contacts.ViewModels
             {
                 await UserDialogs.Instance.AlertAsync(new AlertConfig()
                 {
-                    Title = "Error message",
+                    Title = Resource.ResourceManager.GetString("ErrorMessage", Resource.Culture),
                     Message = e.Message,
                     OkText = "Ok"
                 });

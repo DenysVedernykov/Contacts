@@ -49,11 +49,20 @@ namespace Contacts.ViewModels
         {
             if (parameters.Count > 0)
             {
-                string param = parameters["Refresh"].ToString();
-
-                if (param == "true")
+                if (parameters["Refresh"] != null)
                 {
-                    GetItemsCommand();
+                    if (parameters["Refresh"].ToString() == "true")
+                    {
+                        GetItemsCommand();
+                    }
+                }
+
+                if (parameters["OpenView"] != null)
+                {
+                    if (parameters["OpenView"].ToString() == "Settings")
+                    {
+                        _navigationService.NavigateAsync("SettingsView");
+                    }
                 }
             }
         }
@@ -156,9 +165,9 @@ namespace Contacts.ViewModels
 
             var confirmConfig = new ConfirmConfig()
             {
-                Message = "do you confirm the deletion?",
-                OkText = "Ok",
-                CancelText = "Cancel"
+                Message = Resource.ResourceManager.GetString("ConfirmDelete", Resource.Culture),
+                OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture),
+                CancelText = Resource.ResourceManager.GetString("Cancel", Resource.Culture)
             };
 
             bool confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);

@@ -1,4 +1,5 @@
-﻿using Contacts.Models;
+﻿using Acr.UserDialogs;
+using Contacts.Models;
 using Contacts.Services.Authorization;
 using Contacts.Services.Contacts;
 using Contacts.Services.Repository;
@@ -8,6 +9,7 @@ using Contacts.Views;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
+using System.Globalization;
 using Unity.Lifetime;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -47,6 +49,12 @@ namespace Contacts
         protected override void OnInitialized()
         {
             InitializeComponent();
+            //var androidLocale = Java.Util.Locale.Default;
+            //var netLanguage = androidLocale.ToString().Replace("_", "-");
+
+            //settingsManager.Lang = "ru-RU";
+            Resource.Culture = new System.Globalization.CultureInfo(settingsManager.Lang);
+
             //settingsManager.Session = false;
             bool session = settingsManager.Session;
             //settingsManager.Sort = "Nick";

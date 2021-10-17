@@ -1,12 +1,17 @@
 ﻿using Acr.UserDialogs;
 using Contacts.Services.SettingsManager;
 using Prism.Mvvm;
+using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -14,6 +19,10 @@ namespace Contacts.ViewModels
 {
     class SettingsViewModel : BindableBase
     {
+        public string Nick { get; }
+        public string FullName { get; }
+        public string TimeCreating { get; }
+
         private bool _IsChecked1;
         private bool _IsChecked2;
         private bool _IsChecked3;
@@ -30,15 +39,21 @@ namespace Contacts.ViewModels
 
         private Dictionary<string, string> langs = new Dictionary<string, string>
         {
-            { "English", "en" },
-            { "Русский", "ru" },
-            { "Українська", "ua" }
+            { "English", "en-US" },
+            { "Русский", "ru-RU" },
+            { "Українська", "uk-UA" }
         };
 
         private ISettingsManager _settingsManager;
-        public SettingsViewModel(ISettingsManager settingsManager)
+        private INavigationService _navigationService;
+        public SettingsViewModel(ISettingsManager settingsManager, INavigationService navigationService)
         {
+            Nick = Resource.ResourceManager.GetString("Nick", Resource.Culture);
+            FullName = Resource.ResourceManager.GetString("FullName", Resource.Culture);
+            TimeCreating = Resource.ResourceManager.GetString("TimeCreating", Resource.Culture);
+
             _settingsManager = settingsManager;
+            _navigationService = navigationService;
 
             if (_settingsManager.Sort == "Nick")
             {
@@ -57,7 +72,14 @@ namespace Contacts.ViewModels
 
             Items = new List<string>(langs.Select(x => x.Key).ToList());
 
-            SelectedIndex = langs.ToList().FindIndex(x => x.Value == _settingsManager.Lang);
+            _SelectedIndex = langs.ToList().FindIndex(x => x.Value == _settingsManager.Lang);
+        }
+
+        public ICommand OnRefresh => new Command(Refresh);
+        private void Refresh(object obj)
+        {
+            NavigationParameters param = new NavigationParameters("OpenView=Settings");
+            _navigationService.NavigateAsync("/NavigationPage/MainListView", param);
         }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
@@ -88,9 +110,11 @@ namespace Contacts.ViewModels
                     _settingsManager.NightTheme = IsToggled;
                     break;
                 case nameof(SelectedIndex):
-                    if (SelectedIndex > -1)
+                    if (_SelectedIndex > -1)
                     {
                         _settingsManager.Lang = langs[Items[SelectedIndex]];
+
+                        Resource.Culture = new System.Globalization.CultureInfo(_settingsManager.Lang);
                     }
                     break;
             }

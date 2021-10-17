@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:Helper="clr-namespace:Contacts.Helper"
              x:Class="Contacts.Views.AddEditProfileView"
              Title="{Binding Title}">
     <ContentPage.ToolbarItems>
@@ -14,10 +15,10 @@
                 </Frame.GestureRecognizers>
                 <Image Source="{Binding PathImage}" Aspect="AspectFill"/>
             </Frame>
-            <Entry Text="{Binding Nick}" Placeholder="Nick" VerticalTextAlignment="Center"/>
-            <Entry Text="{Binding FullName}" Placeholder="Full Name" VerticalTextAlignment="Center"/>
+            <Entry Text="{Binding Nick}" Placeholder="{Helper:TranslateExtension Nick}" VerticalTextAlignment="Center"/>
+            <Entry Text="{Binding FullName}" Placeholder="{Helper:TranslateExtension FullName}" VerticalTextAlignment="Center"/>
             <Entry Keyboard="Telephone" Text="{Binding Number}" Placeholder="+xxxxxxxxxxxx" VerticalTextAlignment="Center"/>
-            <Editor Text="{Binding Description} " Placeholder="Description" HeightRequest="200"/>
+            <Editor Text="{Binding Description} " Placeholder="{Helper:TranslateExtension Description}" HeightRequest="200"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

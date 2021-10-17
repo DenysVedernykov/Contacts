@@ -8,6 +8,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -59,6 +60,7 @@ namespace Contacts.ViewModels
         public ICommand OnLoginCommand => new Command(LoginCommand);
         private async void LoginCommand(object obj)
         {
+
             if(_authorization.Login(_login, _password))
             {
                 _settingsManager.Session = true;
@@ -75,8 +77,8 @@ namespace Contacts.ViewModels
             {
                 await UserDialogs.Instance.AlertAsync(new AlertConfig()
                 {
-                    Message = "Invalid login or password!",
-                    OkText = "Ok"
+                    Message = Resource.ResourceManager.GetString("InvalidLoginOrPass", Resource.Culture),
+                    OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                 });
 
                 Password = "";

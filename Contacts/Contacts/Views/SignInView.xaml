@@ -2,19 +2,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contacts.Views.SignInView"
-             Title="Users SignIn">
+             xmlns:Helper="clr-namespace:Contacts.Helper"
+             Title="{Helper:TranslateExtension UsersSignIn}">
     <ContentPage.Content>
         <StackLayout>
             <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
-                <Entry Text="{Binding Login}" Placeholder="Login" VerticalTextAlignment="Center"/>
-                <Entry Text="{Binding Password}" Placeholder="Password" VerticalTextAlignment="Center" IsPassword ="True"/>
+                <Entry Text="{Binding Login}" Placeholder="{Helper:TranslateExtension Login}" VerticalTextAlignment="Center"/>
+                <Entry Text="{Binding Password}" Placeholder="{Helper:TranslateExtension Password}" VerticalTextAlignment="Center" IsPassword ="True"/>
             </StackLayout>
             <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
-                <Button Command="{Binding OnLoginCommand}" IsEnabled="{Binding EnableButton}" Text="SIGN IN" VerticalOptions="Center" BackgroundColor="DarkOrange"/>
+                <Button Command="{Binding OnLoginCommand}" IsEnabled="{Binding EnableButton}" Text="{Helper:TranslateExtension SignIn}" VerticalOptions="Center" BackgroundColor="DarkOrange"/>
                 <Label VerticalOptions="Center" HorizontalOptions="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="SIGN UP" TextColor="Blue" TextDecorations="Underline">
+                            <Span Text="{Helper:TranslateExtension SignUp}" TextColor="Blue" TextDecorations="Underline">
                                 <Span.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding OnRegCommand}"/>
                                 </Span.GestureRecognizers>

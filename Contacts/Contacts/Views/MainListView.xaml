@@ -4,7 +4,7 @@
              xmlns:Helper="clr-namespace:Contacts.Helper"
              xmlns:Behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              x:Class="Contacts.Views.MainListView"
-             Title="Main List"
+             Title="{Helper:TranslateExtension MainList}"
              BackgroundColor="White">
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="logOut.png" Command="{Binding OnExitCommand}"/>
@@ -20,7 +20,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" IsVisible="{Binding IsEmpty}" Text="No profiles added" VerticalOptions="Center" HorizontalOptions="Center"/>
+            <Label Grid.Row="0" IsVisible="{Binding IsEmpty}" Text="{Helper:TranslateExtension NoContactsAdded}" VerticalOptions="Center" HorizontalOptions="Center"/>
             <ListView Grid.Row="0"
                       HasUnevenRows="True"
                       ItemsSource="{Binding Items}"
@@ -37,8 +37,8 @@
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem Text="Edit" Command="{Binding EditCommand}" CommandParameter="{Binding .}"/>
-                                <MenuItem Text="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding .}"/>
+                                <MenuItem Text="{Helper:TranslateExtension Edit}" Command="{Binding EditCommand}" CommandParameter="{Binding .}"/>
+                                <MenuItem Text="{Helper:TranslateExtension Delete}" Command="{Binding DeleteCommand}" CommandParameter="{Binding .}"/>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout Orientation="Horizontal" Padding="10">
@@ -56,7 +56,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Command="{Binding OnOpenAddContactCommand}" IsEnabled="False" Grid.Row="0" Text="Add" BorderColor="#093b7b" BorderWidth="8" FontAttributes="Bold" BackgroundColor="#4294ff" BorderRadius="35" TextColor="White" HorizontalOptions="End" WidthRequest="70" HeightRequest="70" Margin="0,0,20,22" VerticalOptions="End"/>
+            <Button Command="{Binding OnOpenAddContactCommand}" IsEnabled="False" Grid.Row="0" Text="+" BorderColor="#093b7b" BorderWidth="8" FontAttributes="Bold" BackgroundColor="#4294ff" BorderRadius="35" TextColor="White" HorizontalOptions="End" WidthRequest="70" HeightRequest="70" Margin="0,0,20,22" VerticalOptions="End"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
