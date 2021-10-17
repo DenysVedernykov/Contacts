@@ -53,7 +53,14 @@ namespace Contacts
             //var netLanguage = androidLocale.ToString().Replace("_", "-");
 
             //settingsManager.Lang = "ru-RU";
-            Resource.Culture = new System.Globalization.CultureInfo(settingsManager.Lang);
+            try
+            {
+                Resource.Culture = new System.Globalization.CultureInfo(settingsManager.Lang);
+            }
+            catch
+            {
+                Resource.Culture = new System.Globalization.CultureInfo(settingsManager.Lang.Substring(0,2));
+            }
 
             //settingsManager.Session = false;
             bool session = settingsManager.Session;
