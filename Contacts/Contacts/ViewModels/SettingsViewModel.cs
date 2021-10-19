@@ -1,7 +1,9 @@
 ﻿using Acr.UserDialogs;
 using Contacts.Services.SettingsManager;
+using Contacts.Themes;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Unity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -78,6 +80,20 @@ namespace Contacts.ViewModels
         public ICommand OnRefresh => new Command(Refresh);
         private void Refresh(object obj)
         {
+            ICollection<ResourceDictionary> mergedDictionaries = PrismApplication.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null)
+            {
+                mergedDictionaries.Clear();
+                if (IsToggled)
+                {
+                    mergedDictionaries.Add(new DarkTheme());
+                }
+                else
+                {
+                    mergedDictionaries.Add(new LightTheme());
+                }
+            }
+
             NavigationParameters param = new NavigationParameters("OpenView=Settings");
             _navigationService.NavigateAsync("/NavigationPage/MainListView", param);
         }

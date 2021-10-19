@@ -3,20 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contacts.Views.SettingsView"
              xmlns:Helper="clr-namespace:Contacts.Helper"
-             Title="{Helper:TranslateExtension Settings}">
+             Title="{Helper:TranslateExtension Settings}"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
         <StackLayout Padding="30">
-            <Label Text="{Helper:TranslateExtension Sort}" Margin="0, 0, 0, 5"/>
-            <RadioButton Content="{Binding Nick}" IsChecked="{Binding IsChecked1}" GroupName="sort"/>
-            <RadioButton Content="{Binding FullName}" IsChecked="{Binding IsChecked2}" GroupName="sort"/>
-            <RadioButton Content="{Binding TimeCreating}" IsChecked="{Binding IsChecked3}" GroupName="sort"/>
+            <Label TextColor="{DynamicResource TextColor}" Text="{Helper:TranslateExtension Sort}" Margin="0, 0, 0, 5"/>
+            <RadioButton TextColor="{DynamicResource TextColor}" Content="{Binding Nick}" IsChecked="{Binding IsChecked1}" GroupName="sort"/>
+            <RadioButton TextColor="{DynamicResource TextColor}" Content="{Binding FullName}" IsChecked="{Binding IsChecked2}" GroupName="sort"/>
+            <RadioButton TextColor="{DynamicResource TextColor}" Content="{Binding TimeCreating}" IsChecked="{Binding IsChecked3}" GroupName="sort"/>
 
-            <Label Text="{Helper:TranslateExtension NigthMode}" Margin="0, 25, 0, 5"/>
+            <Label TextColor="{DynamicResource TextColor}" Text="{Helper:TranslateExtension NigthMode}" Margin="0, 25, 0, 5"/>
             <Switch IsToggled="{Binding IsToggled}" HorizontalOptions="Start"/>
 
-            <Label Text="{Helper:TranslateExtension Language}" Margin="0, 25, 0, 5"/>
-            <Picker ItemsSource="{Binding Items}" SelectedIndex="{Binding SelectedIndex}"/>
-            <Button Text="{Helper:TranslateExtension Apply}" Command="{Binding OnRefresh}"/>
+            <Label TextColor="{DynamicResource TextColor}" Text="{Helper:TranslateExtension Language}" Margin="0, 25, 0, 5"/>
+            <Picker TextColor="{DynamicResource TextColor}" ItemsSource="{Binding Items}" SelectedIndex="{Binding SelectedIndex}"/>
+            <Button BackgroundColor="{DynamicResource ButtonColor}" TextColor="{DynamicResource TextColor}" Text="{Helper:TranslateExtension Apply}" Command="{Binding OnRefresh}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

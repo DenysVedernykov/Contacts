@@ -4,11 +4,13 @@ using Contacts.Services.Authorization;
 using Contacts.Services.Contacts;
 using Contacts.Services.Repository;
 using Contacts.Services.SettingsManager;
+using Contacts.Themes;
 using Contacts.ViewModels;
 using Contacts.Views;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Unity.Lifetime;
 using Xamarin.Forms;
@@ -60,6 +62,20 @@ namespace Contacts
             catch
             {
                 Resource.Culture = new System.Globalization.CultureInfo(settingsManager.Lang.Substring(0,2));
+            }
+
+            ICollection<ResourceDictionary> mergedDictionaries = PrismApplication.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null)
+            {
+                mergedDictionaries.Clear();
+                if (settingsManager.NightTheme)
+                {
+                    mergedDictionaries.Add(new DarkTheme());
+                }
+                else
+                {
+                    mergedDictionaries.Add(new LightTheme());
+                }
             }
 
             //settingsManager.Session = false;

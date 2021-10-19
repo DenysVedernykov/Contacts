@@ -5,14 +5,14 @@
              xmlns:Behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              x:Class="Contacts.Views.MainListView"
              Title="{Helper:TranslateExtension MainList}"
-             BackgroundColor="White">
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="logOut.png" Command="{Binding OnExitCommand}"/>
         <ToolbarItem IconImageSource="settings.png" Command="{Binding OnOpenSettingsCommand}"/>
     </ContentPage.ToolbarItems>
-     <ContentPage.Resources>
+    <ContentPage.Resources>
         <ResourceDictionary>
-            <Helper:Converter x:Key="Converter" />
+            <Helper:Converter x:Key="Converter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -29,7 +29,7 @@
                       IsPullToRefreshEnabled="true"
                       IsRefreshing="{Binding IsRefreshing}"
                       RefreshCommand="{Binding OnRefreshCommand}"
-              >
+                      SeparatorColor="{DynamicResource SeparatorColor}">
                 <ListView.Behaviors>
                     <Behaviors:EventToCommandBehavior Command="{Binding OnItemTapped}" EventName="ItemTapped" EventArgsConverterParameter="{Binding .}"/>
                 </ListView.Behaviors>
@@ -41,14 +41,14 @@
                                 <MenuItem Text="{Helper:TranslateExtension Delete}" Command="{Binding DeleteCommand}" CommandParameter="{Binding .}"/>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
-                                <StackLayout Orientation="Horizontal" Padding="10">
-                                    <Frame HeightRequest="80" WidthRequest="80" Padding="0" CornerRadius="40" BorderColor="Transparent">
+                                <StackLayout Padding="10" Orientation="Horizontal" BackgroundColor="{DynamicResource ItemBackgroundColor}">
+                                    <Frame HeightRequest="80" WidthRequest="80" Padding="0" CornerRadius="40" BackgroundColor="{DynamicResource ItemBackgroundColor}" BorderColor="Transparent">
                                         <Image Source="{Binding PathImage}" Aspect="AspectFill"/>
                                     </Frame>
                                     <StackLayout Margin="10, 0, 0, 0">
-                                        <Label Text="{Binding Nick}" FontSize="12" />
-                                        <Label Text="{Binding FullName}" FontSize="12" />
-                                        <Label Text="{Binding Number}" FontSize="12" />
+                                        <Label Text="{Binding Nick}" TextColor="{DynamicResource TextColor}" FontSize="12"/>
+                                        <Label Text="{Binding FullName}" TextColor="{DynamicResource TextColor}" FontSize="12"/>
+                                        <Label Text="{Binding Number}" TextColor="{DynamicResource TextColor}" FontSize="12"/>
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell.View>
@@ -56,7 +56,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Command="{Binding OnOpenAddContactCommand}" IsEnabled="False" Grid.Row="0" Text="+" BorderColor="#093b7b" BorderWidth="8" FontAttributes="Bold" BackgroundColor="#4294ff" BorderRadius="35" TextColor="White" HorizontalOptions="End" WidthRequest="70" HeightRequest="70" Margin="0,0,20,22" VerticalOptions="End"/>
+            <Button BorderColor="#093b7b" BorderWidth="8" FontAttributes="Bold" BackgroundColor="#4294ff" CornerRadius="35" TextColor="White" WidthRequest="70" HeightRequest="70" Margin="0, 0, 20, 22" Command="{Binding OnOpenAddContactCommand}" IsEnabled="False" Grid.Row="0" Text="+" VerticalOptions="End" HorizontalOptions="End"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

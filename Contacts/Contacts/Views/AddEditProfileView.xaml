@@ -3,22 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:Helper="clr-namespace:Contacts.Helper"
              x:Class="Contacts.Views.AddEditProfileView"
-             Title="{Binding Title}">
-    <ContentPage.ToolbarItems>
+             Title="{Binding Title}"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    <ContentPage.ToolbarItems BackgroundColor="{DynamicResource Toolbar}">
         <ToolbarItem IconImageSource="floppyDisk.png" Command="{Binding OnSaveContactCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Spacing="0">
-            <Frame HeightRequest="210" Padding="0" BorderColor="Transparent">
+            <Frame HeightRequest="210" Padding="0" BorderColor="Transparent" BackgroundColor="{DynamicResource PageBackgroundColor}">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding OnTapImageContact}"/>
                 </Frame.GestureRecognizers>
                 <Image Source="{Binding PathImage}" Aspect="AspectFill"/>
             </Frame>
-            <Entry Text="{Binding Nick}" Placeholder="{Helper:TranslateExtension Nick}" VerticalTextAlignment="Center"/>
-            <Entry Text="{Binding FullName}" Placeholder="{Helper:TranslateExtension FullName}" VerticalTextAlignment="Center"/>
-            <Entry Keyboard="Telephone" Text="{Binding Number}" Placeholder="+xxxxxxxxxxxx" VerticalTextAlignment="Center"/>
-            <Editor Text="{Binding Description} " Placeholder="{Helper:TranslateExtension Description}" HeightRequest="200"/>
+            <Entry PlaceholderColor="{DynamicResource PlaceholderColor}" TextColor="{DynamicResource TextColor}" Text="{Binding Nick}" Placeholder="{Helper:TranslateExtension Nick}" VerticalTextAlignment="Center"/>
+            <Entry PlaceholderColor="{DynamicResource PlaceholderColor}" TextColor="{DynamicResource TextColor}" Text="{Binding FullName}" Placeholder="{Helper:TranslateExtension FullName}" VerticalTextAlignment="Center"/>
+            <Entry PlaceholderColor="{DynamicResource PlaceholderColor}" TextColor="{DynamicResource TextColor}" Keyboard="Telephone" Text="{Binding Number}" Placeholder="+xxxxxxxxxxxx" VerticalTextAlignment="Center"/>
+            <Editor PlaceholderColor="{DynamicResource PlaceholderColor}" TextColor="{DynamicResource TextColor}" Text="{Binding Description} " Placeholder="{Helper:TranslateExtension Description}" HeightRequest="200"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
