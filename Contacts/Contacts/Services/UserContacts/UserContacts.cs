@@ -1,10 +1,8 @@
 ﻿using Contacts.Models;
 using Contacts.Services.Authorization;
 using Contacts.Services.Repository;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Contacts.Services.Contacts
@@ -36,21 +34,17 @@ namespace Contacts.Services.Contacts
 
         public List<PhoneContact> GetAllContact(string typeSort)
         {
-            var result = _repository.GetAllRowsAsync<PhoneContact>();
-            if (result == null)
-            {
-                return null;
-            }
-            else
-            {
-                List<PhoneContact> list = result.Result;
-                return list.Where(row => row.Autor == _authorization.Profile.Id).OrderBy(row => row.GetType().GetProperty(typeSort).GetValue(row, null)).ToList();
-            }
-        }
+            List<PhoneContact> result = null;
 
-        public Task<PhoneContact> GetContactById(int id)
-        {
-            return  _repository.SearchByIdAsync<PhoneContact>(id);
+            var all = _repository.GetAllRowsAsync<PhoneContact>();
+            if (all != null){
+                //сортировка по полю
+                result = all.Result.
+                    Where(row => row.Autor == _authorization.Profile.Id).
+                    OrderBy(row => row.GetType().GetProperty(typeSort).GetValue(row, null)).ToList();
+            }
+
+            return result;
         }
     }
 }

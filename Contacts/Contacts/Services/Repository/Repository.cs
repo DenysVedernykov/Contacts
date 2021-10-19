@@ -3,7 +3,6 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Contacts.Services.Repository
@@ -25,33 +24,21 @@ namespace Contacts.Services.Repository
                 return database;
             });
         }
-        public Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new()
-        {
-            return _database.Value.DeleteAsync(entity);
-        }
-
-        public Task<List<T>> GetAllRowsAsync<T>() where T : IEntityBase, new()
-        {
-            return _database.Value.Table<T>().ToListAsync();
-        }
-
         public Task<int> InsertAsync<T>(T entity) where T : IEntityBase, new()
         {
             return _database.Value.InsertAsync(entity);
         }
-
         public Task<int> UpdateAsync<T>(T entity) where T : IEntityBase, new()
         {
             return _database.Value.UpdateAsync(entity);
         }
-
-        public Task<T> SearchByIdAsync<T>(int Id) where T : IEntityBase, new()
+        public Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new()
         {
-            return _database.Value.Table<T>().Where(i => i.Id == Id).FirstOrDefaultAsync();
+            return _database.Value.DeleteAsync(entity);
         }
-        public Task<User> SearchUserByLoginAsync<T>(string login) where T : IEntityBase, new()
+        public Task<List<T>> GetAllRowsAsync<T>() where T : IEntityBase, new()
         {
-            return _database.Value.Table<User>().Where(row => row.Login == login).FirstOrDefaultAsync();
+            return _database.Value.Table<T>().ToListAsync();
         }
     }
 }

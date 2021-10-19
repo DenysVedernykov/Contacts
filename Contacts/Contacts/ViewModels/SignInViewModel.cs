@@ -1,16 +1,9 @@
 ﻿using Acr.UserDialogs;
 using Contacts.Services.Authorization;
-using Contacts.Services.Repository;
 using Contacts.Services.SettingsManager;
-using Contacts.Views;
 using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -42,8 +35,6 @@ namespace Contacts.ViewModels
             switch (args.PropertyName)
             {
                 case nameof(Login):
-                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
-                    break;
                 case nameof(Password):
                     EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
                     break;

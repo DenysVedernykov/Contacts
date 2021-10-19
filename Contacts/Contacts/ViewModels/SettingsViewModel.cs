@@ -1,19 +1,11 @@
-﻿using Acr.UserDialogs;
-using Contacts.Services.SettingsManager;
+﻿using Contacts.Services.SettingsManager;
 using Contacts.Themes;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Unity;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -25,19 +17,19 @@ namespace Contacts.ViewModels
         public string FullName { get; }
         public string TimeCreating { get; }
 
-        private bool _IsChecked1;
-        private bool _IsChecked2;
-        private bool _IsChecked3;
-        private bool _IsToggled;
-        private int _SelectedIndex;
-        private List<string> _Items;
+        private bool _isChecked1;
+        private bool _isChecked2;
+        private bool _isChecked3;
+        private bool _isToggled;
+        private int _selectedIndex;
+        private List<string> _items;
 
-        public bool IsChecked1 { get => _IsChecked1; set => SetProperty(ref _IsChecked1, value); }
-        public bool IsChecked2 { get => _IsChecked2; set => SetProperty(ref _IsChecked2, value); }
-        public bool IsChecked3 { get => _IsChecked3; set => SetProperty(ref _IsChecked3, value); }
-        public bool IsToggled { get => _IsToggled; set => SetProperty(ref _IsToggled, value); }
-        public int SelectedIndex { get => _SelectedIndex; set => SetProperty(ref _SelectedIndex, value); }
-        public List<string> Items { get => _Items; set => SetProperty(ref _Items, value); }
+        public bool IsChecked1 { get => _isChecked1; set => SetProperty(ref _isChecked1, value); }
+        public bool IsChecked2 { get => _isChecked2; set => SetProperty(ref _isChecked2, value); }
+        public bool IsChecked3 { get => _isChecked3; set => SetProperty(ref _isChecked3, value); }
+        public bool IsToggled { get => _isToggled; set => SetProperty(ref _isToggled, value); }
+        public int SelectedIndex { get => _selectedIndex; set => SetProperty(ref _selectedIndex, value); }
+        public List<string> Items { get => _items; set => SetProperty(ref _items, value); }
 
         private Dictionary<string, string> langs = new Dictionary<string, string>
         {
@@ -59,22 +51,22 @@ namespace Contacts.ViewModels
 
             if (_settingsManager.Sort == "Nick")
             {
-                _IsChecked1 = true;
+                _isChecked1 = true;
             }
             else if (_settingsManager.Sort == "FullName")
             {
-                _IsChecked2 = true;
+                _isChecked2 = true;
             }
             else if (_settingsManager.Sort == "TimeCreating")
             {
-                _IsChecked3 = true;
+                _isChecked3 = true;
             }
 
             IsToggled = _settingsManager.NightTheme;
 
             Items = new List<string>(langs.Select(x => x.Key).ToList());
 
-            _SelectedIndex = langs.ToList().FindIndex(x => x.Value == _settingsManager.Lang);
+            _selectedIndex = langs.ToList().FindIndex(x => x.Value == _settingsManager.Lang);
         }
 
         public ICommand OnRefresh => new Command(Refresh);
@@ -84,6 +76,7 @@ namespace Contacts.ViewModels
             if (mergedDictionaries != null)
             {
                 mergedDictionaries.Clear();
+
                 if (IsToggled)
                 {
                     mergedDictionaries.Add(new DarkTheme());
@@ -126,7 +119,7 @@ namespace Contacts.ViewModels
                     _settingsManager.NightTheme = IsToggled;
                     break;
                 case nameof(SelectedIndex):
-                    if (_SelectedIndex > -1)
+                    if (_selectedIndex > -1)
                     {
                         _settingsManager.Lang = langs[Items[SelectedIndex]];
 

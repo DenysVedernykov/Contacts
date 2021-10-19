@@ -1,10 +1,8 @@
 ﻿using Contacts.Services.SettingsManager;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using System.Text;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,12 +11,10 @@ namespace Contacts.Helper
     [ContentProperty("Text")]
     public class TranslateExtension : IMarkupExtension
     {
-        readonly CultureInfo ci;
-        private string ResourceId;
+        readonly CultureInfo _CultureInfo;
         public TranslateExtension()
         {
-            ci = new CultureInfo(new SettingsManager().Lang);
-            ResourceId = "Contacts.Resource";
+            _CultureInfo = new CultureInfo(new SettingsManager().Lang);
         }
 
         public string Text { get; set; }
@@ -29,9 +25,9 @@ namespace Contacts.Helper
             if (Text == null)
                 return "";
 
-            ResourceManager resmgr = new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly);
+            ResourceManager resmgr = new ResourceManager("Contacts.Resource", typeof(TranslateExtension).GetTypeInfo().Assembly);
             
-            var translation = resmgr.GetString(Text, ci);
+            var translation = resmgr.GetString(Text, _CultureInfo);
 
             if (translation == null)
             {

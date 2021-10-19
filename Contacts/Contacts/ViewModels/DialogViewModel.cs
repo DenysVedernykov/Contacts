@@ -1,14 +1,8 @@
-﻿using Prism.Commands;
+﻿using Contacts.Services.Contacts;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-using Prism.AppModel;
-using Contacts.Services.Contacts;
-using Contacts.Models;
 
 namespace Contacts.ViewModels
 {
@@ -17,7 +11,7 @@ namespace Contacts.ViewModels
         private IUserContacts _contacts;
         public DialogViewModel(IUserContacts contacts)
         {
-            _CanCloseDialog = true;
+            _canCloseDialog = true;
             _contacts = contacts;
             CloseCommand = new DelegateCommand(() => { RequestClose(null);});
         }
@@ -40,31 +34,25 @@ namespace Contacts.ViewModels
         public DelegateCommand CloseCommand { get; }
         public event Action<IDialogParameters> RequestClose;
 
-        private bool _CanCloseDialog;
-        public bool CanCloseDialog() => _CanCloseDialog;
+        private bool _canCloseDialog;
+        public bool CanCloseDialog() => _canCloseDialog;
 
         public void OnDialogClosed()
         {
-
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            string tmp = parameters["Id"].ToString();
-            int id = Convert.ToInt32(tmp);
-            var res = _contacts.GetContactById(id);
+            PhoneContactViewModel res = parameters["Contact"] as PhoneContactViewModel;
 
             if (res != null)
             {
-                if(res.Result != null)
-                {
-                    Nick = res.Result.Nick;
-                    FullName = res.Result.FullName;
-                    Description = res.Result.Description;
-                    Number = res.Result.Number;
-                    PathImage = res.Result.PathImage;
-                    TimeCreating = res.Result.TimeCreating;
-                }
+                Nick = res.Nick;
+                FullName = res.FullName;
+                Description = res.Description;
+                Number = res.Number;
+                PathImage = res.PathImage;
+                TimeCreating = res.TimeCreating;
             }
         }
     }
