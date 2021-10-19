@@ -1,16 +1,14 @@
-﻿using Contacts.Models;
-using Contacts.Services.Authorization;
+﻿using Contacts.Services.Authorization;
 using Contacts.Services.Contacts;
 using Contacts.Services.Repository;
 using Contacts.Services.SettingsManager;
+using Contacts.Themes;
 using Contacts.ViewModels;
 using Contacts.Views;
 using Prism.Ioc;
 using Prism.Unity;
-using System;
-using Unity.Lifetime;
+using System.Collections.Generic;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Contacts
 {
@@ -20,17 +18,13 @@ namespace Contacts
         {
         }
 
-        static Repository repository = new Repository();
-        static SettingsManager settingsManager = new SettingsManager();
-        static Authorization authorization = new Authorization(repository);
-
         #region --- Ovverides ---
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             //Services
-            containerRegistry.RegisterInstance<IRepository>(repository);
-            containerRegistry.RegisterInstance<ISettingsManager>(settingsManager);
-            containerRegistry.RegisterInstance<IAuthorization>(authorization);
+            containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
+            containerRegistry.RegisterInstance<ISettingsManager>(Container.Resolve<SettingsManager>());
+            containerRegistry.RegisterInstance<IAuthorization>(Container.Resolve<Authorization>());
             containerRegistry.RegisterInstance<IUserContacts>(Container.Resolve<UserContacts>());
 
             //Navigation
@@ -47,16 +41,35 @@ namespace Contacts
         protected override void OnInitialized()
         {
             InitializeComponent();
-            //settingsManager.Session = false;
-            bool session = settingsManager.Session;
-            //settingsManager.Sort = "Nick";
-            //var all = repository.GetAllRowsAsync<Contact>();
-            //foreach(var i in all.Result)
-            //{
-            //    repository.DeleteAsync(i);
-            //}
+            
+            var authorization = Container.Resolve<IAuthorization>();
+            var settingsManager = Container.Resolve<ISettingsManager>();
 
-            if (session)
+            try
+            {
+                Resource.Culture = new System.Globalization.CultureInfo(settingsManager.Lang);
+            }
+            catch
+            {
+                Resource.Culture = new System.Globalization.CultureInfo(settingsManager.Lang.Substring(0, 2));
+            }
+
+            ICollection<ResourceDictionary> mergedDictionaries = PrismApplication.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null)
+            {
+                mergedDictionaries.Clear();
+
+                if (settingsManager.NightTheme)
+                {
+                    mergedDictionaries.Add(new DarkTheme());
+                }
+                else
+                {
+                    mergedDictionaries.Add(new LightTheme());
+                }
+            }
+
+            if (settingsManager.Session)
             {
                 //повторная проверка учетных данных, потому что в идеале они могли устареть,
                 //если бы, например, авторизация была через Google или просто онлайн

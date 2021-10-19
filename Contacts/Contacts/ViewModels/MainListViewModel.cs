@@ -7,16 +7,10 @@ using Contacts.Services.SettingsManager;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Contacts.ViewModels
@@ -29,7 +23,12 @@ namespace Contacts.ViewModels
         private ISettingsManager _settingsManager;
         private INavigationService _navigationService;
 
-        public MainListViewModel(IDialogService dialogService, IUserContacts contacts, IAuthorization authorization, ISettingsManager settingsManager, INavigationService navigationService)
+        public MainListViewModel(
+            IDialogService dialogService, 
+            IUserContacts contacts, 
+            IAuthorization authorization, 
+            ISettingsManager settingsManager, 
+            INavigationService navigationService)
         {
             _dialogService = dialogService;
             _contacts = contacts;
@@ -39,21 +38,28 @@ namespace Contacts.ViewModels
 
             Items = new ObservableCollection<PhoneContactViewModel>();
             GetItemsCommand();
-
         }
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
-            
         }
         public void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.Count > 0)
             {
-                string param = parameters["Refresh"].ToString();
-
-                if (param == "true")
+                if (parameters["Refresh"] != null)
                 {
-                    GetItemsCommand();
+                    if (parameters["Refresh"].ToString() == "true")
+                    {
+                        GetItemsCommand();
+                    }
+                }
+
+                if (parameters["OpenView"] != null)
+                {
+                    if (parameters["OpenView"].ToString() == "Settings")
+                    {
+                        _navigationService.NavigateAsync("SettingsView");
+                    }
                 }
             }
         }
@@ -77,6 +83,7 @@ namespace Contacts.ViewModels
 
         private void GetItemsCommand()
         {
+            //включает отображение значка обновления
             IsRefreshing = true;
             
             var editCommand = new Command(EditCommand);
@@ -104,7 +111,7 @@ namespace Contacts.ViewModels
             if (_selectedItem != null)
             {
                 var param = new DialogParameters();
-                param.Add("Id", _selectedItem.Id);
+                param.Add("Contact", _selectedItem);
 
                 _dialogService.ShowDialog("DialogView", param);
             }
@@ -118,12 +125,6 @@ namespace Contacts.ViewModels
             _settingsManager.Password = "";
 
             await _navigationService.NavigateAsync("/NavigationPage/SignInView");
-
-            //await Share.RequestAsync(new ShareFileRequest
-            //{
-            //    Title = "FN:",
-            //    File = new ShareFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ContactsBook.db3"))
-            //});
         }
 
         private async void OpenSettingsCommand(object obj)
@@ -134,7 +135,6 @@ namespace Contacts.ViewModels
         private void OpenAddContactCommand(object obj)
         {
             NavigationParameters param = new NavigationParameters("IsCreateMode=true");
-
             _navigationService.NavigateAsync("AddEditProfileView", param);
         }
 
@@ -156,12 +156,12 @@ namespace Contacts.ViewModels
 
             var confirmConfig = new ConfirmConfig()
             {
-                Message = "do you confirm the deletion?",
-                OkText = "Ok",
-                CancelText = "Cancel"
+                Message = Resource.ResourceManager.GetString("ConfirmDelete", Resource.Culture),
+                OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture),
+                CancelText = Resource.ResourceManager.GetString("Cancel", Resource.Culture)
             };
 
-            bool confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+            var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
 
             if (confirm)
             {

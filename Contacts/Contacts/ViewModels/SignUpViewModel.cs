@@ -3,10 +3,7 @@ using Contacts.Services.Authorization;
 using Contacts.Services.SettingsManager;
 using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -37,11 +34,7 @@ namespace Contacts.ViewModels
             switch (args.PropertyName)
             {
                 case nameof(Login):
-                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(ConfirmPassword);
-                    break;
                 case nameof(Password):
-                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(ConfirmPassword);
-                    break;
                 case nameof(ConfirmPassword):
                     EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(ConfirmPassword);
                     break;
@@ -60,15 +53,15 @@ namespace Contacts.ViewModels
         public ICommand OnRegCommand => new Command(RegCommand);
         private async void RegCommand(object obj)
         {
-            if (_authorization.loginMatching(Login))
+            if (_authorization.LoginMatching(Login))
             {
                 if (Password == ConfirmPassword)
                 {
-                    if (_authorization.passwordMatching(Password))
+                    if (_authorization.PasswordMatching(Password))
                     {
-                        if (_authorization.CheckForUse(Login))
+                        if (_authorization.CheckLoginForUse(Login))
                         {
-                            _authorization.Reg(Login, Password);
+                            _authorization.Registration(Login, Password);
                             _settingsManager.Login = Login;
 
                             await _navigationService.NavigateAsync("/NavigationPage/SignInView");
@@ -77,8 +70,8 @@ namespace Contacts.ViewModels
                         {
                             await UserDialogs.Instance.AlertAsync(new AlertConfig()
                             {
-                                Message = "This login is already taken!",
-                                OkText = "Ok"
+                                Message = Resource.ResourceManager.GetString("LoginTaken", Resource.Culture),
+                                OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                             });
                         }
                     }
@@ -86,8 +79,8 @@ namespace Contacts.ViewModels
                     {
                         await UserDialogs.Instance.AlertAsync(new AlertConfig()
                         {
-                            Message = "Password must contain at least one uppercase letter, one lowercase letter and one number and must be at least 8 and no more than 16 characters!",
-                            OkText = "Ok"
+                            Message = Resource.ResourceManager.GetString("PasswordNoMatching", Resource.Culture),
+                            OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                         });
                     }
                 }
@@ -95,8 +88,8 @@ namespace Contacts.ViewModels
                 {
                     await UserDialogs.Instance.AlertAsync(new AlertConfig()
                     {
-                        Message = "The values in the UserPassword and ConfirmUserPassword fields must match!",
-                        OkText = "Ok"
+                        Message = Resource.ResourceManager.GetString("FieldsMustMatch", Resource.Culture),
+                        OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                     });
                 }
             }
@@ -104,8 +97,8 @@ namespace Contacts.ViewModels
             {
                 await UserDialogs.Instance.AlertAsync(new AlertConfig()
                 {
-                    Message = "Login must not start with a number and must be at least 4 and no more than 16 characters!",
-                    OkText = "Ok"
+                    Message = Resource.ResourceManager.GetString("LoginNoMAtching", Resource.Culture),
+                    OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                 });
             }
         }

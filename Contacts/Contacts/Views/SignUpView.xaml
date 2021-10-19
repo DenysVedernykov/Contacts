@@ -2,16 +2,32 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contacts.Views.SignUpView"
-             Title="Users SignUp">
+             xmlns:Helper="clr-namespace:Contacts.Helper"
+             Title="{Helper:TranslateExtension UsersSignUp}"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
-                <Entry Text="{Binding Login}" Placeholder="Login" VerticalTextAlignment="Center"/>
-                <Entry Text="{Binding Password}" Placeholder="Password" VerticalTextAlignment="Center" IsPassword ="True"/>
-                <Entry Text="{Binding ConfirmPassword}" Placeholder="Confirm password" VerticalTextAlignment="Center" IsPassword ="True"/>
+            <StackLayout Padding="30" 
+                         VerticalOptions="CenterAndExpand">
+                <Entry Text="{Binding Login}" 
+                       Placeholder="{Helper:TranslateExtension Login}" 
+                       VerticalTextAlignment="Center"/>
+                <Entry Text="{Binding Password}" 
+                       Placeholder="{Helper:TranslateExtension Password}" 
+                       VerticalTextAlignment="Center" 
+                       IsPassword ="True"/>
+                <Entry Text="{Binding ConfirmPassword}" 
+                       Placeholder="{Helper:TranslateExtension ConfirmPassword}" 
+                       VerticalTextAlignment="Center" 
+                       IsPassword ="True"/>
             </StackLayout>
-            <StackLayout Padding="30" VerticalOptions="CenterAndExpand">
-                <Button Command="{Binding OnRegCommand}" IsEnabled="{Binding EnableButton}" Text="SIGN UP" VerticalOptions="Center" BackgroundColor="DarkOrange"/>
+            <StackLayout Padding="30" 
+                         VerticalOptions="CenterAndExpand">
+                <Button BackgroundColor="DarkOrange" 
+                        Command="{Binding OnRegCommand}" 
+                        IsEnabled="{Binding EnableButton}" 
+                        Text="{Helper:TranslateExtension SignUp}" 
+                        VerticalOptions="Center"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

@@ -2,7 +2,7 @@
 using Contacts.Services.Repository;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -22,12 +22,27 @@ namespace Contacts.Services.Authorization
         public bool Status { get => _status; }
         public User Profile { get =>_profile; }
 
-        public bool CheckForUse(string login)
+        private User SearchUserByLogin(string login)
+        {
+            User result = null;
+
+            Task<List<User>> all = _repository.GetAllRowsAsync<User>();
+            if(all != null)
+            {
+                if(all.Result != null)
+                {
+                    result = all.Result.Where(row => row.Login == login).FirstOrDefault();
+                }
+            }
+
+            return result;
+        }
+        public bool CheckLoginForUse(string login)
         {
             bool result = false;
 
-            Task<User> user = _repository.SearchUserByLoginAsync<User>(login);
-            if (user.Result == null)
+            User user = SearchUserByLogin(login);
+            if (user == null)
             {
                 result = true;
             }
@@ -35,7 +50,7 @@ namespace Contacts.Services.Authorization
             return result;
         }
 
-        public bool loginMatching(string login)
+        public bool LoginMatching(string login)
         {
             bool result = true;
 
@@ -55,7 +70,7 @@ namespace Contacts.Services.Authorization
             return result;
         }
 
-        public bool passwordMatching(string password)
+        public bool PasswordMatching(string password)
         {
             bool result = true;
 
@@ -77,12 +92,12 @@ namespace Contacts.Services.Authorization
             return result;
         }
 
-        public bool Reg(string login, string password)
+        public bool Registration(string login, string password)
         {
             bool result = false;
 
-            Task<User> user = _repository.SearchUserByLoginAsync<User>(login);
-            if (user.Result == null)
+            User user = SearchUserByLogin(login);
+            if (user == null)
             {
                 var newUser = new User()
                 {
@@ -104,35 +119,17 @@ namespace Contacts.Services.Authorization
             _status = false;
             _profile = null;
 
-            Task<User> user = _repository.SearchUserByLoginAsync<User>(login);
-            if (user.Result != null)
+            User user = SearchUserByLogin(login);
+            if (user != null)
             {
-                if (user.Result.Password == password)
+                if (user.Password == password)
                 {
                     _status = true;
-                    _profile = user.Result;
+                    _profile = user;
                 }
             }
 
             return _status;
-        }
-        public async Task<bool> ChangePassword(string newPassword)
-        {
-            string tmp = _profile.Password;
-
-            _profile.Password = newPassword;
-            int res = await _repository.UpdateAsync(_profile);
-
-            if (res > 0)
-            {
-                return true;
-            }
-            else
-            {
-                //в случаи неудачи возврат старого пароля
-                _profile.Password = tmp;
-                return false;
-            }
         }
 
         public void LogOut()

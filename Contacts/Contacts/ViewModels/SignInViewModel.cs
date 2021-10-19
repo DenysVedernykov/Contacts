@@ -1,15 +1,9 @@
 ﻿using Acr.UserDialogs;
 using Contacts.Services.Authorization;
-using Contacts.Services.Repository;
 using Contacts.Services.SettingsManager;
-using Contacts.Views;
 using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -41,8 +35,6 @@ namespace Contacts.ViewModels
             switch (args.PropertyName)
             {
                 case nameof(Login):
-                    EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
-                    break;
                 case nameof(Password):
                     EnableButton = !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
                     break;
@@ -59,6 +51,7 @@ namespace Contacts.ViewModels
         public ICommand OnLoginCommand => new Command(LoginCommand);
         private async void LoginCommand(object obj)
         {
+
             if(_authorization.Login(_login, _password))
             {
                 _settingsManager.Session = true;
@@ -75,8 +68,8 @@ namespace Contacts.ViewModels
             {
                 await UserDialogs.Instance.AlertAsync(new AlertConfig()
                 {
-                    Message = "Invalid login or password!",
-                    OkText = "Ok"
+                    Message = Resource.ResourceManager.GetString("InvalidLoginOrPass", Resource.Culture),
+                    OkText = Resource.ResourceManager.GetString("Ok", Resource.Culture)
                 });
 
                 Password = "";

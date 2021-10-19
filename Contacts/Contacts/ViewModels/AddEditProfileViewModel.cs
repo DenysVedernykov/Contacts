@@ -2,14 +2,11 @@
 using Contacts.Models;
 using Contacts.Services.Authorization;
 using Contacts.Services.Contacts;
-using Contacts.Services.Repository;
 using Prism.Mvvm;
 using Prism.Navigation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -19,7 +16,7 @@ namespace Contacts.ViewModels
 {
     class AddEditProfileViewModel : BindableBase, IInitialize
     {
-        private PhoneContact editContact;
+        private PhoneContact _editContact;
         private IUserContacts _contacts;
         private IAuthorization _authorization;
         private INavigationService _navigationService;
@@ -38,24 +35,29 @@ namespace Contacts.ViewModels
         {
             if (parameters.Count > 0)
             {
-                string param = parameters["IsCreateMode"].ToString();
+                string param = "false";
+
+                if (parameters["IsCreateMode"] != null)
+                {
+                    param = parameters["IsCreateMode"].ToString();
+                }
 
                 if (param == "true")
                 {
                     IsCreateMode = true;
-                    Title = "Add Contact";
+                    Title = Resource.ResourceManager.GetString("AddContact", Resource.Culture);
                 }
                 else
                 {
                     IsCreateMode = false;
-                    Title = "Edit Contact";
-                    editContact = parameters["Contact"] as PhoneContact;
+                    Title = Resource.ResourceManager.GetString("EditContact", Resource.Culture);
+                    _editContact = parameters["Contact"] as PhoneContact;
 
-                    Nick = editContact.Nick;
-                    FullName = editContact.FullName;
-                    Description = editContact.Description;
-                    Number = editContact.Number;
-                    PathImage = editContact.PathImage;
+                    Nick = _editContact.Nick;
+                    FullName = _editContact.FullName;
+                    Description = _editContact.Description;
+                    Number = _editContact.Number;
+                    PathImage = _editContact.PathImage;
                 }
             }
         }
@@ -89,7 +91,7 @@ namespace Contacts.ViewModels
         public string Number { get => _number; set => SetProperty(ref _number, value); }
         public string PathImage { get => _pathImage; set => SetProperty(ref _pathImage, value); }
 
-        private bool Check()
+        private bool VerificationFields()
         {
             bool result = !string.IsNullOrWhiteSpace(Nick) && !string.IsNullOrWhiteSpace(FullName);
 
@@ -108,7 +110,7 @@ namespace Contacts.ViewModels
                 result = false;
             }
 
-            return result;              
+            return result;
         }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
@@ -117,16 +119,10 @@ namespace Contacts.ViewModels
             switch (args.PropertyName)
             {
                 case nameof(Nick):
-                    IsEnable = Check();
-                    break;
                 case nameof(FullName):
-                    IsEnable = Check();
-                    break;
                 case nameof(Description):
-                    IsEnable = Check();
-                    break;
                 case nameof(Number):
-                    IsEnable = Check();
+                    IsEnable = VerificationFields();
                     break;
             }
         }
@@ -151,14 +147,13 @@ namespace Contacts.ViewModels
                 }
                 else
                 {
-                    //update
-                    editContact.Nick = _nick;
-                    editContact.FullName = _fullName;
-                    editContact.Description = _description;
-                    editContact.Number = _number;
-                    editContact.PathImage = _pathImage;
+                    _editContact.Nick = _nick;
+                    _editContact.FullName = _fullName;
+                    _editContact.Description = _description;
+                    _editContact.Number = _number;
+                    _editContact.PathImage = _pathImage;
 
-                    _contacts.Update(editContact);
+                    _contacts.Update(_editContact);
                 }
 
                 NavigationParameters param = new NavigationParameters("Refresh=true");
@@ -170,22 +165,28 @@ namespace Contacts.ViewModels
             }
         );
 
-        public ICommand OnTapImageContact => new Command(async (obj) =>
+        public ICommand OnTapImageContact => new Command((obj) =>
         {
             try
             {
                 UserDialogs.Instance.ActionSheet(new ActionSheetConfig()
-                    .SetTitle("Choose Type")
-                    .Add("Pick at Gallery", () => this.OnImageFromGallery.Execute(null), "attach.png")
-                    .Add("Take photo with camera", () => this.OnImageFromCamera.Execute(null), "camera.png")
+                    .SetTitle(Resource.ResourceManager.GetString("ChooseType", Resource.Culture))
+                    .Add(Resource.ResourceManager.GetString("PickAtGallery", Resource.Culture), () => this.OnImageFromGallery.Execute(null), "attach.png")
+                    .Add(Resource.ResourceManager.GetString("TakePhotoWithCamera", Resource.Culture), () => this.OnImageFromCamera.Execute(null), "camera.png")
                 );
             }
             catch (Exception e)
             {
+                UserDialogs.Instance.AlertAsync(new AlertConfig()
+                {
+                    Title = Resource.ResourceManager.GetString("ErrorMessage", Resource.Culture),
+                    Message = e.Message,
+                    OkText = "Ok"
+                });
             }
         });
 
-        public ICommand OnImageFromGallery => new Command(async (obj) =>
+        public ICommand OnImageFromGallery => new Command(async(obj) =>
         {
             try
             {
@@ -193,7 +194,13 @@ namespace Contacts.ViewModels
                 PathImage = photo.FullPath;
             }
             catch (Exception e)
-            { 
+            {
+                await UserDialogs.Instance.AlertAsync(new AlertConfig()
+                {
+                    Title = Resource.ResourceManager.GetString("ErrorMessage", Resource.Culture),
+                    Message = e.Message,
+                    OkText = "Ok"
+                });
             }
         });
 
@@ -203,7 +210,7 @@ namespace Contacts.ViewModels
             {
                 var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
                 {
-                    Title = $"xamarin.{DateTime.Now.ToString("dd.MM.yyyy_hh.mm.ss")}.png"
+                    Title = $"image.{DateTime.Now.ToString("dd.MM.yyyy_hh.mm.ss")}.png"
                 });
 
                 var newFile = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
@@ -218,7 +225,7 @@ namespace Contacts.ViewModels
             {
                 await UserDialogs.Instance.AlertAsync(new AlertConfig()
                 {
-                    Title = "Error message",
+                    Title = Resource.ResourceManager.GetString("ErrorMessage", Resource.Culture),
                     Message = e.Message,
                     OkText = "Ok"
                 });

@@ -6,19 +6,26 @@
        prism:ViewModelLocator.AutowireViewModel="True"
        prism:DialogLayout.RelativeWidthRequest="{OnIdiom Default=0.75, Desktop=0.5}"
        HasShadow="false"
-       BackgroundColor="White"
-       >
+       BackgroundColor="{DynamicResource PageBackgroundColor}">
+    
     <Frame.GestureRecognizers>
         <TapGestureRecognizer Command="{Binding CloseCommand}"/>
     </Frame.GestureRecognizers>
-    <StackLayout>
-        <Frame HeightRequest="210" Padding="0" BorderColor="Transparent">
-            <Image Source="{Binding PathImage}" Aspect="AspectFit"/>
+    <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
+        <Frame HeightRequest="210">
+            <Image Source="{Binding PathImage}" 
+                   Aspect="AspectFit"/>
         </Frame>
-        <Label Text="{Binding Nick}" VerticalTextAlignment="Center" Margin="0, 15, 0, 0"/>
-        <Label Text="{Binding FullName}" VerticalTextAlignment="Center"/>
-        <Label Text="{Binding Number}"  VerticalTextAlignment="Center"/>
-        <Label Text="{Binding Description}" HeightRequest="150"/>
-        <Label Text="{Binding TimeCreating}" VerticalTextAlignment="Center"/>
+        <Label Text="{Binding Nick}" 
+               VerticalTextAlignment="Center" 
+               Margin="0, 15, 0, 0"/>
+        <Label Text="{Binding FullName}" 
+               VerticalTextAlignment="Center"/>
+        <Label Text="{Binding Number}"  
+               VerticalTextAlignment="Center"/>
+        <Label Text="{Binding Description}" 
+               HeightRequest="150"/>
+        <Label Text="{Binding TimeCreating}" 
+               VerticalTextAlignment="Center"/>
     </StackLayout>
 </Frame>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Contacts.Services.SettingsManager
+﻿namespace Contacts.Services.SettingsManager
 {
     public interface ISettingsManager
     {

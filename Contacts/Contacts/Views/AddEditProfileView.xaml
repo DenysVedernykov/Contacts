@@ -1,23 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:Helper="clr-namespace:Contacts.Helper"
              x:Class="Contacts.Views.AddEditProfileView"
-             Title="{Binding Title}">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="floppyDisk.png" Command="{Binding OnSaveContactCommand}"/>
+             Title="{Binding Title}"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    <ContentPage.ToolbarItems BackgroundColor="{DynamicResource Toolbar}">
+        <ToolbarItem IconImageSource="floppyDisk.png" 
+                     Command="{Binding OnSaveContactCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Spacing="0">
-            <Frame HeightRequest="210" Padding="0" BorderColor="Transparent">
+            <Frame HeightRequest="210">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding OnTapImageContact}"/>
                 </Frame.GestureRecognizers>
-                <Image Source="{Binding PathImage}" Aspect="AspectFill"/>
+                <Image Source="{Binding PathImage}" 
+                       Aspect="AspectFill"/>
             </Frame>
-            <Entry Text="{Binding Nick}" Placeholder="Nick" VerticalTextAlignment="Center"/>
-            <Entry Text="{Binding FullName}" Placeholder="Full Name" VerticalTextAlignment="Center"/>
-            <Entry Keyboard="Telephone" Text="{Binding Number}" Placeholder="+xxxxxxxxxxxx" VerticalTextAlignment="Center"/>
-            <Editor Text="{Binding Description} " Placeholder="Description" HeightRequest="200"/>
+            <Entry Text="{Binding Nick}" 
+                   Placeholder="{Helper:TranslateExtension Nick}" 
+                   VerticalTextAlignment="Center"/>
+            <Entry Text="{Binding FullName}" 
+                   Placeholder="{Helper:TranslateExtension FullName}" 
+                   VerticalTextAlignment="Center"/>
+            <Entry Keyboard="Telephone" 
+                   Text="{Binding Number}" 
+                   Placeholder="+xxxxxxxxxxxx" 
+                   VerticalTextAlignment="Center"/>
+            <Editor Text="{Binding Description}" 
+                    Placeholder="{Helper:TranslateExtension Description}" 
+                    HeightRequest="200"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

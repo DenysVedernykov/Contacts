@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Essentials;
+﻿using Xamarin.Essentials;
 
 namespace Contacts.Services.SettingsManager
 {
@@ -34,7 +31,7 @@ namespace Contacts.Services.SettingsManager
         }
         public string Lang
         {
-            get => Preferences.Get(nameof(Lang), "en");
+            get => Preferences.Get(nameof(Lang), "en-US");
             set => Preferences.Set(nameof(Lang), value);
         }
     }

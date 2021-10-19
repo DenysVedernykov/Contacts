@@ -4,6 +4,31 @@
              xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
              x:Class="Contacts.App">
     <prism:PrismApplication.Resources>
-
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="{DynamicResource NavigationBarColor}" />
+            <Setter Property="BarTextColor" Value="{DynamicResource BarTextColor}" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="{DynamicResource TextColor}"/>
+        </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="TextColor" Value="{DynamicResource TextColor}"/>
+        </Style>
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="{DynamicResource PlaceholderColor}"/>
+            <Setter Property="TextColor" Value="{DynamicResource TextColor}"/>
+        </Style>
+        <Style TargetType="Editor">
+            <Setter Property="PlaceholderColor" Value="{DynamicResource PlaceholderColor}"/>
+            <Setter Property="TextColor" Value="{DynamicResource TextColor}"/>
+        </Style>
+        <Style TargetType="Frame">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderColor" Value="Transparent"/>
+            <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="TextColor" Value="{DynamicResource TextColor}"/>
+        </Style>
     </prism:PrismApplication.Resources>
 </prism:PrismApplication>
