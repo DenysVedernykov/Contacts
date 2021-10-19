@@ -56,7 +56,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button BorderColor="#093b7b" BorderWidth="8" FontAttributes="Bold" BackgroundColor="#4294ff" CornerRadius="35" TextColor="White" WidthRequest="70" HeightRequest="70" Margin="0, 0, 20, 22" Command="{Binding OnOpenAddContactCommand}" IsEnabled="False" Grid.Row="0" Text="+" VerticalOptions="End" HorizontalOptions="End"/>
+            <Button x:Name="ButtonFloating" BorderColor="#093b7b" BorderWidth="8" FontAttributes="Bold" BackgroundColor="#4294ff" CornerRadius="35" TextColor="White" WidthRequest="70" HeightRequest="70" Margin="0, 0, 20, 22" Command="{Binding OnOpenAddContactCommand}" IsEnabled="False" Grid.Row="0" Text="+" VerticalOptions="End" HorizontalOptions="End"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

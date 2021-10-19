@@ -42,6 +42,8 @@ namespace Contacts.ViewModels
             Items = new ObservableCollection<PhoneContactViewModel>();
             GetItemsCommand();
 
+            
+
         }
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
