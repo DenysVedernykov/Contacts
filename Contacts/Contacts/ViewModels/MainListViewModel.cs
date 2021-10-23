@@ -56,9 +56,11 @@ namespace Contacts.ViewModels
 
                 if (parameters["OpenView"] != null)
                 {
-                    if (parameters["OpenView"].ToString() == "Settings")
+                    switch (parameters["OpenView"].ToString())
                     {
-                        _navigationService.NavigateAsync("SettingsView");
+                        case "Settings":
+                            _navigationService.NavigateAsync("SettingsView");
+                            break;
                     }
                 }
             }

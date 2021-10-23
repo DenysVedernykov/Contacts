@@ -49,17 +49,17 @@ namespace Contacts.ViewModels
             _settingsManager = settingsManager;
             _navigationService = navigationService;
 
-            if (_settingsManager.Sort == "Nick")
+            switch (_settingsManager.Sort)
             {
-                _isChecked1 = true;
-            }
-            else if (_settingsManager.Sort == "FullName")
-            {
-                _isChecked2 = true;
-            }
-            else if (_settingsManager.Sort == "TimeCreating")
-            {
-                _isChecked3 = true;
+                case "Nick":
+                    _isChecked1 = true;
+                    break;
+                case "FullName":
+                    _isChecked2 = true;
+                    break;
+                case "TimeCreating":
+                    _isChecked3 = true;
+                    break;
             }
 
             IsToggled = _settingsManager.NightTheme;
